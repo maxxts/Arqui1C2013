@@ -81,7 +81,7 @@ kmain()
 	_Cli();
 /* Habilito interrupcion de timer tick*/
 
-        _mascaraPIC1(0xFE);
+        _mascaraPIC1(0xFC); //Permito interrupciones de Teclado y TimerTick
         _mascaraPIC2(0xFF);
 
 	_Sti();
