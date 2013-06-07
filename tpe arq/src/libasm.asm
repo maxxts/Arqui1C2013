@@ -68,20 +68,20 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
         pop     ds
         iret
 
-_keyboardHandler:
+_keyboardHandler:			; Handler de INT 9 ( Keyboard )
 	push    ds
         push    es                      ; Se salvan los registros
-        pusha                           ; Carga de DS y ES con el valor del selector
-        mov     ax, 10h			; a utilizar.
-        mov     ds, ax
-        mov     es, ax                  
-        call    int_09                 
-        mov	al,20h			; Envio de EOI generico al PIC
+        pusha                           
+        in al,60h			; guardo el scancode obtenido del teclado y lo paso a travez del stack.
+        push ax                  
+        call    int_09			; llamo a la rutina de atencion de C.                 
+        pop ax
+	mov	al,20h			; Envio de EOI generico al PIC
 	out	20h,al
 	popa                            
         pop     es
         pop     ds
-	iret
+        iret
 
 
 ; Debug para el BOCHS, detiene la ejecució; Para continuar colocar en el BOCHSDBG: set $eax=0
