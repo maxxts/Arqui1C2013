@@ -3,6 +3,7 @@
 #include "../include/stdarg.h"
 
 #define STD_OUT 1
+#define STD_IN 0
 
 
 /***************************************************************
@@ -43,8 +44,9 @@ void putc(char c){
 }
 
 
-void getc(){
-
+char getc(){
+    char buffer;
+    return __read(STD_IN, &buffer ,1);
 }
 
 void printInt(int a) {
@@ -89,6 +91,44 @@ void printf(char * fmt, ...){
     return;
 }
 
+int scanf(char * fmt, ...){
 
+	char *i, *j;
+	int cant;
+
+	va_list fp;
+	va_start(fp, fmt);
+
+	void * aux;
+	for(i = fmt ; *i != 0 ; i++){
+
+		if(*i == '%'){
+
+			aux = va_arg(fp, void*);
+
+			switch(*(++i)){
+
+				case 'c': *(char*)aux = getc();
+                          //putc(*(char*)aux);
+                          cant++;
+                          break;
+
+				case 's': for(j = (char*)aux  ; *j != 0 ; j++){
+                               *j = getc();
+                                //putc(*j);
+                          }
+                          cant++;
+                          break;
+
+				case 'd':
+                          break;
+
+            }
+		}
+	}
+
+	va_end(fp);
+	return cant;
+}
 
 

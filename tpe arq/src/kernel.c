@@ -36,13 +36,15 @@ size_t __write(int fd, const void* buffer, size_t count) {
         videoPrint(video,buffer, count);
 	}
 
-	return fd;//no se si esta bien asi
+	return (fd == STD_OUT);//no se si esta bien asi
 }
 
-size_t __read(int fd, void* buffer, size_t count) {
+size_t __read(int fd, void * buffer, size_t count) {
     if(fd == STD_IN){
-        //__readKeyboard(buffer);
+        *(char*)buffer = pullBuffer();
     }
+
+    return *(size_t*)buffer;
 }
 
 /**********************************************
@@ -81,8 +83,15 @@ kmain()
 
 	_Sti();
 
+	char * c;
+	scanf("%s", c);
+	printf(c);
+	printf(c);
+	printf(c);
+	printf(c);
 
-	
+
+
 
 
         while(1)
