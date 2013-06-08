@@ -70,11 +70,13 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 	in 	al,71h
 	push 	eax			; Lo paso como parametro
 	
+	mov 	eax, 0
 	mov 	al, 02h			; Leo las MIN del RTC
 	out 	70h, al
 	in 	al,71h
 	push 	eax			; Lo paso como parametro
 	
+	mov 	eax, 0
 	mov 	al, 04h			; Leo las HS del RTC
 	out 	70h, al
 	in 	al,71h
