@@ -82,8 +82,8 @@ kmain()
 	_Sti();
 
 
-	//int auxi = 343;
-	//printf("hola %d", auxi);
+	int auxi = 343;
+	printf("hola %d", auxi);
 
 
         while(1)

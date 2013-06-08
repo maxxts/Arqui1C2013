@@ -111,16 +111,20 @@ void scanStatus(int scode){
 	
 	switch (scode){
 		case 0x2A:
+			
 			status_LSHIFT = 1;
 			break;
 		case 0x36:
+			
 			status_RSHIFT = 1;
 			break;
 		case 0x2A+0x80: //Sumando 0x80 obtengo el codigo de "release" de una tecla. (http://en.wikipedia.org/wiki/Scancode)
+						
 			status_LSHIFT = 0;
 			break;
 
 		case 0x36+0x80:
+				
 			status_RSHIFT = 0;
 			break;
 
@@ -160,6 +164,10 @@ void int_09 (int scode){
 	//Evaluo ambos Shift
 	if (status_LSHIFT || status_RSHIFT){
 		status_SHIFT = 1;
+	}else{
+
+		status_SHIFT = 0;	
+
 	}
 	
 	
@@ -199,11 +207,13 @@ void int_09 (int scode){
 								
 				}			
 			
-			}		
+			}
+		
+		__write(1,&toPrint,1); //IMPRIMO - TEST		
 
 		}
 	
-	__write(1,&toPrint,1); //IMPRIMO - TEST
+	
 		
 	}
 
