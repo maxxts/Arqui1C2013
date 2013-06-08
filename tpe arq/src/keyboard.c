@@ -181,7 +181,7 @@ int isAlpha(int scode){
 void int_09 (int scode){
 	
 	
-	writeScreen((char *)0xb8000, 0, 0, scode);
+	
 	
 	char toPrint;
 
