@@ -134,7 +134,7 @@ void scanStatus(int scode){
 }
 
 //Checkea si es un caracter alfabetico. Sera utilizado para definir el comportamiento del "CAPS LOCK"
-int isAlpha(scode){
+int isAlpha(int scode){
 
 	if( (scode>=0x10 && scode<=0x19) || (scode>=0x1E && scode<=0x26) || (scode>=0x2C && 													scode<=0x32)){
 		return 1;
@@ -147,7 +147,13 @@ int isAlpha(scode){
 
 //RUTINA DE ATENCION DE INTERRUPCION PARA TECLADO
 void int_09 (int scode){
+	
+
+	
+	
 	char toPrint;
+
+	
 	//Me fijo si tengo que cambiar algun estado
 	scanStatus(scode);
 
@@ -155,11 +161,13 @@ void int_09 (int scode){
 	if (status_LSHIFT || status_RSHIFT){
 		status_SHIFT = 1;
 	}
-
+	
+	
+	
 	//Valido que el Scan Code sea valido
 	if (scode >= 0x01 && scode <= 0x58)
 	{
-
+		
 		//Valido que sea un caracter que puede ser mostrado en pantalla
 		if (key_map[scode][0] != NO_PRINT)
 		{
@@ -194,10 +202,12 @@ void int_09 (int scode){
 			}		
 
 		}
+	
+	__write(1,&toPrint,1); //IMPRIMO - TEST
 		
 	}
 
-	__write(1,toPrint,1); //IMPRIMO - TEST
+	
 
 }
 

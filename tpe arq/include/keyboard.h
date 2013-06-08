@@ -6,7 +6,7 @@
 
 void int_09 (int scode);
 void scanStatus(int scode);
-int isAlpha(scode);
+int isAlpha(int scode);
 
 
 

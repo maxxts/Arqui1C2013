@@ -70,15 +70,21 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 
 _keyboardHandler:			; Handler de INT 9 ( Keyboard )
 	push    ds
-        push    es                      ; Se salvan los registros
-        pusha                           
-        in al,60h			; guardo el scancode obtenido del teclado y lo paso a travez del stack.
-        push ax                  
-        call    int_09			; llamo a la rutina de atencion de C.                 
-        pop ax
-	mov	al,20h			; Envio de EOI generico al PIC
-	out	20h,al
-	popa                            
+        push    es          		; Se salvan los registros
+        pusha               		; Carga de DS y ES con el valor del selector
+        mov     ax, 10h		
+        mov     ds, ax
+        mov     es, ax      
+        
+        mov 	eax, 0		; Limpio ah
+        in 	al, 60h		; Puerto de datos del teclado
+        push	eax             ; Paso scancode como parametro
+        call    int_09
+        mov	al,20h		; Envio de EOI generico al PIC
+	out 	20h,al
+	pop 	eax
+		
+	popa
         pop     es
         pop     ds
         iret

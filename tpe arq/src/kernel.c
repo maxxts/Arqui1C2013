@@ -19,12 +19,7 @@ void int_08() {
 
 }
 
-void int_09() {
 
-    //char *video = (char *) 0xb8000;
-    //video[tickpos+=2]='!';
-
-}
 /*
 
 	fila
@@ -79,7 +74,7 @@ kmain()
 	_lidt (&idtr);
 
 	_Cli();
-/* Habilito interrupcion de timer tick*/
+
 
         _mascaraPIC1(0xFC); //Permito interrupciones de Teclado y TimerTick
         _mascaraPIC2(0xFF);
