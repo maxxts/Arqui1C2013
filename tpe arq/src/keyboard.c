@@ -105,6 +105,32 @@ int status_LSHIFT = 0;
 int status_SHIFT = 0;
 int status_CAPS = 0;
 
+char buffer;
+int buffEmpty = 1;
+
+int pushBuffer (char c) {
+
+	if(!buffEmpty) {
+		return 0;
+	}
+	
+	buffer = c;
+	buffEmpty = 0;
+	return 1;	
+	
+}
+
+char pullBuffer () {
+
+	char ans;
+	if (buffEmpty){
+		return EOF;
+	}
+
+	buffEmpty = 1;
+	return ans;	
+}
+
 
 
 void scanStatus(int scode){
@@ -208,8 +234,10 @@ void int_09 (int scode){
 				}			
 			
 			}
-		
-		__write(1,&toPrint,1); //IMPRIMO - TEST		
+			
+						
+			__write(1, &toPrint,1); //para debug
+//			pushBuffer(toPrint); //AGREGO EL CARACTER AL BUFFER	
 
 		}
 	

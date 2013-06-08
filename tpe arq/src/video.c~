@@ -4,8 +4,9 @@
 
 #define MAX_COLS 80
 #define MAX_ROWS 25
+#define TAB_SIZE 25
 
-int cRow = 0; 
+int cRow = 1;
 int cCol = 0;
 
 int vindex = 0;
@@ -13,9 +14,14 @@ int vindex = 0;
 
 char* posVideo = (char *) 0xb8000;
 
+void resetCursor(){
+    cRow = 1;
+    cCol = 0;
+}
+
 void videoClear(char * video){
 
-	
+
 	int i=0;
 	while(i < (MAX_COLS*MAX_ROWS*2)) {
 
@@ -25,29 +31,98 @@ void videoClear(char * video){
 		i++;
 	}
 
-	cRow = 0;
-	cCol = 0;
+	resetCursor();
 
 
 }
 
-
-int videoPrintChar (char* video, char c)
+void writeScreen(char * video, int col, int row, char c)
 {
-	//Cambio pagina y eso
-	video[ 2*(cCol) + 2*(cRow)*(MAX_COLS) ] = c;
-	cCol++;
-
-	return 1; 
+	video[ 2*(col) + 2*(row)*(MAX_COLS) ] = c;
+	return;
 }
+
+int checkPosition(video)
+{
+	if(cCol == (MAX_COLS - 1)){
+		if(cRow == MAX_ROWS - 1){
+				//SCROLL
+		} else {
+			cRow++;
+			cCol = 0;
+		}
+	}	
+}
+
+int videoPrintChar (char* video, char c){
+	
+	//VALIDO MI POSICION
+	
+	checkPosition(video);
+
+	writeScreen(video,0,0, (char) cCol);
+	
+	switch(c){
+		//Pregunto por "Enter", "Tab" y "Backspace"
+		case '\t':
+			tabKey(video);
+			return 0;
+		case '\b':
+			backKey(video);
+			return 0;
+		case '\n':
+			enterKey(video);
+			return 0;
+		default:
+			//video[ 2*(cCol) + 2*(cRow)*(MAX_COLS) ] = c;			
+			writeScreen(video, cCol, cRow, c);			
+			cCol++;
+			return 1;
+
+	}	
+	
+}
+
+void tabKey(char * video) {
+	
+	int i;
+	for (i=1; i <= TAB_SIZE; i++)
+	{
+		videoPrintChar(video,' ');
+	}
+	return;
+}
+
+void enterKey(char * video) { 
+
+	if (cRow < MAX_ROWS){
+		cRow++;
+		cCol=0;
+	}else{
+		//scroll	
+	}
+	return;
+
+}
+
+void backKey(char * video) {
+	
+		
+	if (cCol != 0) {
+		//No estoy en el principio de la linea
+		cCol--;
+		writeScreen(video,cCol,cRow,' '); //SOBRESCRIBO EL CARACTER
+	}
+
+}									
 
 
 int videoPrint(char* video,const char* buffer, int count) {
-	
+
 	int index = 0;
-	
+
 	if(buffer == 0) {
-		return;	
+		return;
 	}
 
 	while(buffer[index] != '\0' && count > 0) {

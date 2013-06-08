@@ -2,6 +2,7 @@
 #define _keyboard_
 
 #define NO_PRINT    0
+#define EOF    -1
 
 
 void int_09 (int scode);
