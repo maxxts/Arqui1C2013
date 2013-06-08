@@ -1,6 +1,8 @@
 
 #include "../include/keyboard.h"
 #include "../include/kernel.h"
+//PRUEBA
+#include "../include/video.h"
 
 
 
@@ -178,8 +180,8 @@ int isAlpha(int scode){
 //RUTINA DE ATENCION DE INTERRUPCION PARA TECLADO
 void int_09 (int scode){
 	
-
 	
+	writeScreen((char *)0xb8000, 0, 0, scode);
 	
 	char toPrint;
 

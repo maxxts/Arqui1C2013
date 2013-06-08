@@ -6,6 +6,8 @@
 #define STD_OUT 1
 #define STD_IN 0
 
+
+
 DESCR_INT idt[0xA];			/* IDT de 10 entradas*/
 IDTR idtr;				/* IDTR */
 
@@ -14,22 +16,29 @@ char* video = (char *)0xb8000;
 
 void int_08(int seg, int min, int hs) {
 
-    char * strSeg = "";
-    char * strMin = ""; 
-    char * strHs = "";
-    intToString(1,strSeg);
-    intToString(2,strMin);
-    intToString(3,strHs);    
+   /* char * strSeg = "00";
+    char * strMin = "50"; 
+    char * strHs = "13";
+    char * strTemp = "80";
+    //intToString(1,strSeg);
+    //intToString(2,strMin);
+    //intToString(3,strHs);    
     
-    printSystemInfo(video,strHs,strMin,strSeg,"74");
+    printSystemInfo(video,strHs,strMin,strSeg,strTemp);*/
 
 }
 
-void intToString(int a, char * str) {
+/*void intToString(int a, char * str) {
     if (a/10 == 0) {
         str = str + ('0' + a);
         return;
     }
+    
+    intToString(a/10,str);
+    str = str + ('0' + a%10);
+    return;
+    
+}*/
 
 
 size_t __write(int fd, const void* buffer, size_t count) {
