@@ -30,6 +30,12 @@ void intToString(int a, char * str) {
         str = str + ('0' + a);
         return;
     }
+    
+    intToString(a/10);
+    str = str + ('0' + a%10);
+    return;
+    
+}
 
 
 size_t __write(int fd, const void* buffer, size_t count) {
