@@ -122,13 +122,13 @@ int pushBuffer (char c) {
 
 char pullBuffer () {
 
-	char ans;
+	
 	if (buffEmpty){
 		return EOF;
 	}
 
 	buffEmpty = 1;
-	return ans;	
+	return buffer;	
 }
 
 
