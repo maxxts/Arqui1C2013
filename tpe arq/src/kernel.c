@@ -12,22 +12,24 @@ IDTR idtr;				/* IDTR */
 int tickpos=0;
 char* video = (char *)0xb8000;
 
-void int_08() {
+void int_08(int seg, int min, int hs) {
 
-    //char *video = (char *) 0xb8000;
-    //video[tickpos+=2]='';
+    char * strSeg = "";
+    char * strMin = ""; 
+    char * strHs = "";
+    intToString(1,strSeg);
+    intToString(2,strMin);
+    intToString(3,strHs);    
+    
+    printSystemInfo(video,strHs,strMin,strSeg,"74");
 
 }
 
-
-/*
-
-	fila
-	columna
-
-	pos = (fila*COLUMNA_SIZE + columna)*2
-
-*/
+void intToString(int a, char * str) {
+    if (a/10 == 0) {
+        str = str + ('0' + a);
+        return;
+    }
 
 
 size_t __write(int fd, const void* buffer, size_t count) {
