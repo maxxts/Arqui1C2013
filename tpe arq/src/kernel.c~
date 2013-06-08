@@ -16,19 +16,19 @@ char* video = (char *)0xb8000;
 
 void int_08(int seg, int min, int hs) {
 
-   /* char * strSeg = "00";
-    char * strMin = "50"; 
-    char * strHs = "13";
+    char * strSeg = "";
+    char * strMin = ""; 
+    char * strHs = "";
     char * strTemp = "80";
-    //intToString(1,strSeg);
-    //intToString(2,strMin);
-    //intToString(3,strHs);    
+    intToString(1,strSeg);
+    intToString(2,strMin);
+    intToString(3,strHs);    
     
-    printSystemInfo(video,strHs,strMin,strSeg,strTemp);*/
+    printSystemInfo(video,strHs,strMin,strSeg,strTemp);
 
 }
 
-/*void intToString(int a, char * str) {
+void intToString(int a, char * str) {
     if (a/10 == 0) {
         str = str + ('0' + a);
         return;
@@ -38,7 +38,7 @@ void int_08(int seg, int min, int hs) {
     str = str + ('0' + a%10);
     return;
     
-}*/
+}
 
 
 size_t __write(int fd, const void* buffer, size_t count) {
@@ -94,12 +94,12 @@ kmain()
 
 	_Sti();
 
-	char * c;
+	char * c = "Hola!";
 	scanf("%s", c);
-	printf(c);
-	printf(c);
-	printf(c);
-	printf(c);
+	printf("%s",c);
+	
+	//printf("Hola: %s","Maxi");
+	
 
 
 

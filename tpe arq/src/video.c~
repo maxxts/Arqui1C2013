@@ -4,19 +4,56 @@
 
 #define MAX_COLS 80
 #define MAX_ROWS 25
-#define TAB_SIZE 25
+#define TAB_SIZE 8
 
 int cRow = 1;
 int cCol = 0;
 
+int topCol =0;
+
 int vindex = 0;
 
 
-char* posVideo = (char *) 0xb8000;
+//char* posVideo = (char *) 0xb8000;
 
 void resetCursor(){
     cRow = 1;
     cCol = 0;
+}
+
+void printSystemInfo(char * video, char * hs, char * min, char * seg, char * temp)
+{
+
+	//IMPRIMO HORAS
+	writeScreen(video, 64+0, 0, hs[0]);
+	writeScreen(video, 64+1, 0, hs[1]);
+	
+	writeScreen(video, 64+2, 0, ':');
+	
+	//IMPRIMO MINUTOS
+	writeScreen(video, 64+3, 0, min[0]);
+	writeScreen(video, 64+4, 0, min[1]);
+	
+	writeScreen(video, 64+5, 0, ':');
+	
+	//IMPRIMO SEGUNDOS
+	writeScreen(video, 64+6, 0, seg[0]);
+	writeScreen(video, 64+7, 0, seg[1]);
+	
+	writeScreen(video, 64+8, 0, ' ');
+	
+	writeScreen(video, 64+9, 0, 'h');
+	writeScreen(video, 64+10, 0, 's');
+	
+	//IMPRIMO TEMPERATURA
+	
+	writeScreen(video, 64+11, 0, ' ');
+	writeScreen(video, 64+12, 0, temp[0]);
+	writeScreen(video, 64+13, 0, temp[1]);
+	writeScreen(video, 64+14, 0, ' ');
+	writeScreen(video, 64+15, 0, 'C');
+	
+	
 }
 
 void videoClear(char * video){
@@ -60,7 +97,7 @@ int videoPrintChar (char* video, char c){
 	
 	checkPosition(video);
 
-	writeScreen(video,0,0, (char) cCol);
+	
 	
 	switch(c){
 		//Pregunto por "Enter", "Tab" y "Backspace"

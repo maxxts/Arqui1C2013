@@ -180,8 +180,8 @@ int isAlpha(int scode){
 //RUTINA DE ATENCION DE INTERRUPCION PARA TECLADO
 void int_09 (int scode){
 	
-	char* video = (char *)0xb8000;
-	writeScreen(video, 0, 0, scode);
+	
+	writeScreen((char *)0xb8000, 0, 0, scode);
 	
 	char toPrint;
 

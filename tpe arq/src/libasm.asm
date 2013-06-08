@@ -61,6 +61,26 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
         mov     ds, ax
         mov     es, ax
         
+        ;LECTURA DEL REAL TIME CLOCK
+        
+        
+        mov 	eax, 0			; Borro ax
+        mov 	al, 00h			; Leo las SEG del RTC
+	out 	70h, al
+	in 	al,71h
+	push 	eax			; Lo paso como parametro
+	
+	mov 	eax, 0
+	mov 	al, 02h			; Leo las MIN del RTC
+	out 	70h, al
+	in 	al,71h
+	push 	eax			; Lo paso como parametro
+	
+	mov 	eax, 0
+	mov 	al, 04h			; Leo las HS del RTC
+	out 	70h, al
+	in 	al,71h
+	push 	eax			; Lo paso como parametro
         			
 				                
         ;LLAMADA A FUNCION DE KERNEL.C
@@ -68,6 +88,11 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
         call    int_08                 
         mov	al,20h			; Envio de EOI generico al PIC
 	out	20h,al
+	pop 	eax
+	pop 	eax
+	pop 	eax
+	
+	
 	popa                            
         pop     es
         pop     ds
