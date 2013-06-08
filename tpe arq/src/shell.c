@@ -18,41 +18,41 @@
  */
 char shellInput[MAX_INPUT + 1]; //Ultimo espacio reservado para cerrar la cadena en caso de llegar al tope.
 //Direccion actual del arreglo.
-char inputPos = 0; 
+char inputPos = 0;
 
 
 
 void initializeShell() {
 
-		
+
 		/** BIENVENIDA **/
 
 		printShell();
-		
+
 		while(1)
 		{
-	
+
 			char inChar;
-			
+
 			//LEO EL BUFFER DEL TECLADO (GETC) Y GUARDO EN inChar
-			
+
 			if (inChar == '\t'){
-				
+
 				//Inhibo el TAB en la linea de comandos
-				
-				
+
+
 			}else if (inChar == '\b'){
-				
+
 				//Verifico la posicion. Si es 0 => No permito que borre.
 				if (inputPos > 0)
 				{
 					putc(inChar);
 					inputPos--;
 				}
-				
-				
+
+
 			}else if (inChar == '\n'){
-				
+
 				//Imprimo el ENTER
 				putc(inChar);
 				//ANALIZO COMANDOS
@@ -62,28 +62,28 @@ void initializeShell() {
 				inputPos = 0;
 				//Muestro el Shell
 				printShell();
-				
+
 			}else {
-			
+
 				//Agrego caracter al input
 				if (!MaxReached())
 				{
 					addToInput(inChar);
 					putc(inChar);
 				}else{
-				
+
 					//Alcanzo el final de la linea
-				
+
 				}
-				
-			
+
+
 			}
-			
-			
-					
-			
-			
-			
+
+
+
+
+
+
 
 		}
 }
@@ -110,7 +110,7 @@ void printShell(){
 int MaxReached() {
 
 	return inputPos == MAX_INPUT - 1;
-	
+
 }
 
-
+//para el push
