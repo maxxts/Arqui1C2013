@@ -91,7 +91,7 @@ void printf(char * fmt, ...){
     return;
 }
 
-int scanf(char * fmt, ...){
+int scanf(char * fmt,  ...){
 
 	char *i, *j;
 	int cant;
@@ -99,7 +99,7 @@ int scanf(char * fmt, ...){
 	va_list fp;
 	va_start(fp, fmt);
 
-	void * aux;
+	char * aux;
 	for(i = fmt ; *i != 0 ; i++){
 
 		if(*i == '%'){
@@ -108,21 +108,16 @@ int scanf(char * fmt, ...){
 
 			switch(*(++i)){
 
-				case 'c': *(char*)aux = getc();
-                          //putc(*(char*)aux);
+				case 'c': *aux = getc();
                           cant++;
                           break;
 
-				case 's': for(j = (char*)aux  ; *j != 0 ; j++){
+				case 's': for( ; *j != 0 ; j++){
                                *j = getc();
-                                //putc(*j);
                           }
+                          aux = j;
                           cant++;
                           break;
-
-				case 'd':
-                          break;
-
             }
 		}
 	}
@@ -131,4 +126,20 @@ int scanf(char * fmt, ...){
 	return cant;
 }
 
+int strcmp(char* s1, char* s2){
+	int resp;
+    int i;
 
+	for(i=0 ; s1[i] || s2[i] ; i++){
+		resp = s1[i]-s2[i];
+		if(resp != 0){
+			return resp;
+		}
+	}
+
+	return 0;
+}
+
+void strcpy(char *s1, char *s2){
+    while (*s1++ = *s2++);
+}

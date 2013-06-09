@@ -34,8 +34,7 @@ void initializeShell() {
 
 			char inChar;
 
-			//LEO EL BUFFER DEL TECLADO (GETC) Y GUARDO EN inChar
-
+			inChar = getc();
 			if (inChar == '\t'){
 
 				//Inhibo el TAB en la linea de comandos
@@ -98,6 +97,26 @@ void addToInput( char c ){
 void checkInput(){
 
 	//Leo el INPUT y comparo con los comandos
+	char c = shellInput[inputPos-1];
+	strcpy(shellInput,c);
+
+	char first=shellInput[0];
+	switch(first){
+
+                case 'l':   if(strcmp("lspci",shellInput) == 0){
+                                //printPCI();
+                            }else{
+                                printf("Comando invalido\n");
+                            }
+                            break;
+
+                case 'b':   if(strcmp("burnProc", shellInput) == 0){
+                                //burnProc();
+                            }else{
+                                printf("Comando Invalido\n");
+                            }
+                            break;
+	}
 
 }
 
@@ -112,5 +131,3 @@ int MaxReached() {
 	return inputPos == MAX_INPUT - 1;
 
 }
-
-//para el push
