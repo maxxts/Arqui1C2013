@@ -14,17 +14,20 @@ IDTR idtr;				/* IDTR */
 int tickpos=0;
 char* video = (char *)0xb8000;
 
-void int_08(int seg, int min, int hs) {
+void int_08(int hs, int min, int seg) {
 
-    char * strSeg = "";
-    char * strMin = ""; 
     char * strHs = "";
+    char * strMin = ""; 
+    char * strSeg = "";
     char * strTemp = "80";
-    intToString(1,strSeg);
-    intToString(2,strMin);
-    intToString(3,strHs);    
+   
+   itoa(hs,strHs);
+   itoa(min,strMin);
+   itoa(seg,strSeg);
     
-    printSystemInfo(video,strHs,strMin,strSeg,strTemp);
+    
+    
+    printSystemInfo(video,hs,min,seg,"80");
 
 }
 
@@ -38,6 +41,42 @@ void intToString(int a, char * str) {
     str = str + ('0' + a%10);
     return;
     
+}
+
+ void itoa(int n, char s[])
+ {
+     int i, sign;
+ 
+     if ((sign = n) < 0)  /* record sign */
+         n = -n;          /* make n positive */
+     i = 0;
+     do {       /* generate digits in reverse order */
+         s[i++] = n % 10 + '0';   /* get next digit */
+     } while ((n /= 10) > 0);     /* delete it */
+     if (sign < 0)
+         s[i++] = '-';
+     s[i] = '\0';
+     //reverse(s);
+ }
+ 
+  void reverse(char s[])
+ {
+     int i, j;
+     char c;
+ 
+     for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
+         c = s[i];
+         s[i] = s[j];
+         s[j] = c;
+     }
+ }
+ 
+int strlen(char* str)
+{
+    int i;
+    while (str[i] != '\0')
+        ++i;
+    return i;
 }
 
 
@@ -94,10 +133,10 @@ kmain()
 
 	_Sti();
 
-	char * c = "Hola!";
+	/*char * c = "Hola!";
 	scanf("%s", c);
 	printf("%s",c);
-	
+	*/
 	//printf("Hola: %s","Maxi");
 	
 

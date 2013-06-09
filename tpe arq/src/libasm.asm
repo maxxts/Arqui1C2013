@@ -65,19 +65,19 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
         
         
         mov 	eax, 0			; Borro ax
-        mov 	al, 00h			; Leo las SEG del RTC
+        mov 	al, 0h			; Leo las SEG del RTC
 	out 	70h, al
 	in 	al,71h
 	push 	eax			; Lo paso como parametro
 	
 	mov 	eax, 0
-	mov 	al, 02h			; Leo las MIN del RTC
+	mov 	al, 2h			; Leo las MIN del RTC
 	out 	70h, al
 	in 	al,71h
 	push 	eax			; Lo paso como parametro
 	
 	mov 	eax, 0
-	mov 	al, 04h			; Leo las HS del RTC
+	mov 	al, 4h			; Leo las HS del RTC
 	out 	70h, al
 	in 	al,71h
 	push 	eax			; Lo paso como parametro

@@ -62,10 +62,19 @@ void videoClear(char * video){
 	int i=0;
 	while(i < (MAX_COLS*MAX_ROWS*2)) {
 
-		video[i]=' ';
-		i++;
-		video[i]=GREEN_TXT;
-		i++;
+		if (i >= MAX_COLS*2) {
+			video[i]=' ';
+			i++;
+			video[i]=GREEN_TXT;
+			i++;
+		}else{
+		
+			video[i]=' ';
+			i++;
+			video[i]=WHITE_TXT;
+			i++;
+		
+		}
 	}
 
 	resetCursor();
