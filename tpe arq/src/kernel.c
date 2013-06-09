@@ -16,9 +16,9 @@ char* video = (char *)0xb8000;
 
 void int_08(int hs, int min, int seg) {
 
-    char * strHs = "";
-    char * strMin = ""; 
-    char * strSeg = "";
+    char * strHs = "15";
+    char * strMin = "20"; 
+    char * strSeg = "00";
     char * strTemp = "80";
    
    itoa(hs,strHs);
@@ -27,7 +27,7 @@ void int_08(int hs, int min, int seg) {
     
     
     
-    printSystemInfo(video,hs,min,seg,"80");
+    printSystemInfo(video,strHs,strMin,strSeg,"80");
 
 }
 
@@ -56,7 +56,7 @@ void intToString(int a, char * str) {
      if (sign < 0)
          s[i++] = '-';
      s[i] = '\0';
-     //reverse(s);
+     reverse(s);
  }
  
   void reverse(char s[])
