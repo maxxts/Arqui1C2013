@@ -41,7 +41,7 @@ size_t __read(int fd, void* buffer, size_t count);
 
 void intToString(int a, char * str);
 
-void itoa(int i, char b[]);
+void itoa (int number, char *buffer);
 
 int strlen(char* str);
 void reverse(char s[]);

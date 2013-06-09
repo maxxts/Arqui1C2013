@@ -20,5 +20,7 @@ void		_int_08_hand();      /* Timer tick */
 
 void 		_keyboardHandler();    /*Interrupcion de teclado */
 
+
+
 void		_debug (void);
 

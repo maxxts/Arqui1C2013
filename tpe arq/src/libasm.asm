@@ -1,11 +1,13 @@
 GLOBAL  _read_msw,_lidt
 GLOBAL  _int_08_hand
 GLOBAL  _keyboardHandler
+
 GLOBAL  _mascaraPIC1,_mascaraPIC2,_Cli,_Sti
 GLOBAL  _debug
 
 EXTERN  int_08
 EXTERN  int_09
+
 
 
 SECTION .text
@@ -99,6 +101,7 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
         iret
 
 _keyboardHandler:			; Handler de INT 9 ( Keyboard )
+	
 	push    ds
         push    es          ; Se salvan los registros
         pusha               ; Carga de DS y ES con el valor del selector
@@ -118,6 +121,8 @@ _keyboardHandler:			; Handler de INT 9 ( Keyboard )
         pop     es
         pop     ds
         iret
+        
+
 
 
 ; Debug para el BOCHS, detiene la ejecució; Para continuar colocar en el BOCHSDBG: set $eax=0
