@@ -181,7 +181,7 @@ int isAlpha(int scode){
 void int_09 (int scode){
 	
 	
-	writeScreen((char *)0xb8000, 0, 0, scode);
+	
 	
 	char toPrint;
 
@@ -238,8 +238,10 @@ void int_09 (int scode){
 			}
 			
 						
-			__write(1, &toPrint,1); //para debug
-//			pushBuffer(toPrint); //AGREGO EL CARACTER AL BUFFER	
+			
+			pushBuffer(toPrint);
+			//char c =pullBuffer(); Debug
+			//__write(1, &c,1); 
 
 		}
 	

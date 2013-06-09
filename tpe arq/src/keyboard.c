@@ -238,8 +238,10 @@ void int_09 (int scode){
 			}
 			
 						
-			__write(1, &toPrint,1); //para debug
-//			pushBuffer(toPrint); //AGREGO EL CARACTER AL BUFFER	
+			
+			pushBuffer(toPrint);
+			//char c =pullBuffer(); Debug
+			//__write(1, &c,1); 
 
 		}
 	

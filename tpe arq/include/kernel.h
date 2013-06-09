@@ -43,7 +43,5 @@ void intToString(int a, char * str);
 
 void itoa (int number, char *buffer);
 
-int strlen(char* str);
-void reverse(char s[]);
 
 #endif

@@ -2,6 +2,7 @@
 #include "../include/defs.h"
 #include "../include/video.h"
 #include "../include/kernel.h"
+#include "../include/shell.h"
 
 #define STD_OUT 1
 #define STD_IN 0
@@ -16,26 +17,26 @@ char* video = (char *)0xb8000;
 
 void int_08(int hs, int min, int seg) {
 
-    
-    
-    
+
+
+
 		char strHs[2];
-		char strMin[2]; 
+		char strMin[2];
 		char strSeg[2];
 		char * strTemp = "80";
 
 		itoa(hs,strHs);
 		itoa(min,strMin);
 		itoa(seg,strSeg);
-    		
-    		
-    		
+
+
+
 		printSystemInfo(video,strHs,strMin,strSeg,"80");
-		
-    
-   
-   
-   
+
+
+
+
+
 
 }
 
@@ -47,12 +48,12 @@ void itoa (int number, char *buffer)
    unsigned long ud = number;
    int divisor = 10;
 
-   
+
    /* Divide ud ( parte del número, ejemplo: 123 -> ud = 3 / ud = 2 / ud = 1) */
    do
      {
        int remainder = ud % divisor;
-		
+
        *p++ = remainder + '0';
      }
    while (ud /= divisor);
@@ -71,16 +72,10 @@ void itoa (int number, char *buffer)
        p1++;
        p2--;
      }
-     
+
  }
- 
-int strlen(char* str)
-{
-    int i;
-    while (str[i] != '\0')
-        ++i;
-    return i;
-}
+
+
 
 
 size_t __write(int fd, const void* buffer, size_t count) {
@@ -97,7 +92,7 @@ size_t __read(int fd, void * buffer, size_t count) {
         *(char*)buffer = pullBuffer();
     }
 
-    return *(size_t*)buffer;
+    return *(size_t*)buffer; //tendria q devolver el tamaño del buffer en realidad pero no esta guardado el keyboard eso
 }
 
 /**********************************************
@@ -136,15 +131,20 @@ kmain()
 
 	_Sti();
 
-	
-		
-
+	initializeShell();
 
         while(1)
         {
-        
-        		
-        
+
+		char myChar;
+		myChar = getc();
+		if (myChar!=-1)
+		{
+			
+			printf("Letra: %c \n",myChar); 
+		}
+	
+
         }
 
 }

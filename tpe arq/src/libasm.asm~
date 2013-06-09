@@ -55,7 +55,50 @@ _lidt:				; Carga el IDTR
         retn
 
 
-
+_int_08_hand:				; Handler de INT 8 ( Timer tick)
+        push    ds
+        push    es                      ; Se salvan los registros
+        pusha                           ; Carga de DS y ES con el valor del selector
+        mov     ax, 10h			; a utilizar.
+        mov     ds, ax
+        mov     es, ax
+        
+        ;LECTURA DEL REAL TIME CLOCK
+        
+        
+        mov 	eax, 0			; Borro ax
+        mov 	al, 0h			; Leo las SEG del RTC
+	out 	74h, al
+	in 	al,75h
+	push 	eax			; Lo paso como parametro
+	
+	mov 	eax, 0
+	mov 	al, 2h			; Leo las MIN del RTC
+	out 	74h, al
+	in 	al,75h
+	push 	eax			; Lo paso como parametro
+	
+	mov 	eax, 0
+	mov 	al, 4h			; Leo las HS del RTC
+	out 	74h, al
+	in 	al,75h
+	push 	eax			; Lo paso como parametro
+        			
+				                
+        ;LLAMADA A FUNCION DE KERNEL.C
+        
+        call    int_08                 
+        mov	al,20h			; Envio de EOI generico al PIC
+	out	20h,al
+	pop 	eax
+	pop 	eax
+	pop 	eax
+	
+	
+	popa                            
+        pop     es
+        pop     ds
+        iret
 
 _keyboardHandler:			; Handler de INT 9 ( Keyboard )
 	

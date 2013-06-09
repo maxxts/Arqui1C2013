@@ -2,6 +2,7 @@
 #include "../include/defs.h"
 #include "../include/video.h"
 #include "../include/kernel.h"
+#include "../include/shell.h"
 
 #define STD_OUT 1
 #define STD_IN 0
@@ -130,14 +131,9 @@ kmain()
 
 	_Sti();
 
+	initializeShell();
 
-
-        while(1)
-        {
-
-
-
-        }
+        
 
 }
 

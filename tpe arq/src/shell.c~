@@ -112,7 +112,9 @@ void addToInput( char c ){
 void checkInput(){
 
 	//Leo el INPUT y comparo con los comandos
-	
+	char c = shellInput[inputPos-1];
+	strcpy(shellInput,c);
+
 	char first=shellInput[0];
 	switch(first){
 
