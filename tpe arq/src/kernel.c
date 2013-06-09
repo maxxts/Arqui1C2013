@@ -16,31 +16,19 @@ char* video = (char *)0xb8000;
 
 void int_08(int hs, int min, int seg) {
 
-    char * strHs = "15";
-    char * strMin = "20"; 
-    char * strSeg = "00";
-    char * strTemp = "80";
+    //char * strHs;
+    //char * strMin; 
+    //char * strSeg;
+   // char * strTemp = "80";
    
-   itoa(hs,strHs);
-   itoa(min,strMin);
-   itoa(seg,strSeg);
+  // itoa(hs,strHs);
+   //itoa(min,strMin);
+   //itoa(seg,strSeg);
     
     
     
-    printSystemInfo(video,strHs,strMin,strSeg,"80");
+   printSystemInfo(video,"23","54","00","80");
 
-}
-
-void intToString(int a, char * str) {
-    if (a/10 == 0) {
-        str = str + ('0' + a);
-        return;
-    }
-    
-    intToString(a/10,str);
-    str = str + ('0' + a%10);
-    return;
-    
 }
 
  void itoa(int n, char s[])
