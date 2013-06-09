@@ -117,18 +117,21 @@ void checkInput(){
 	switch(first){
 
                 case 'l':   if(strcmp("lspci",shellInput) == 0){
-                                //printPCI();
+                                printf("Ejecutando \"lspci\"...\n");
                             }else{
-                                printf("Comando invalido\n");
+                                printf("Comando Invalido. Pruebe \"lspci\".\n");
                             }
                             break;
 
-                case 'b':   if(strcmp("burnProc", shellInput) == 0){
-                                //burnProc();
+                case 'b':   if(strcmp("burnproc", shellInput) == 0){
+                                 printf("Ejecutando \"burnproc\"...\n");
                             }else{
-                                printf("Comando Invalido\n");
+                                printf("Comando Invalido. Pruebe \"burnproc\".\n");
                             }
                             break;
+                default:
+                		printf("Comando Invalido.\n");
+                		break;
 	}
 
 }
