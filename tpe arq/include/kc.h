@@ -6,6 +6,7 @@
 #ifndef _kc_
 #define _kc_
 
+#define EOF -1
 #define WHITE_TXT 0x07 // Atributo de video. Letras blancas, fondo negro
 #define GREEN_TXT 0x02 // Atributo de video. Letras verdes, fondo negro
 

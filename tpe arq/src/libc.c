@@ -46,7 +46,9 @@ void putc(char c){
 
 char getc(){
     char buffer;
-    return __read(STD_IN, &buffer ,1);
+    do{
+        __read(STD_IN, &buffer ,1);
+    }while(buffer == EOF);
 }
 
 void printInt(int a) {
@@ -58,6 +60,10 @@ void printInt(int a) {
     printInt(a/10);
     putc('0' + a%10);
     return;
+}
+
+void strcpy(char *s1, char *s2){
+    while (*s1++ = *s2++);
 }
 
 void printf(char * fmt, ...){
@@ -94,7 +100,8 @@ void printf(char * fmt, ...){
 int scanf(char * fmt,  ...){
 
 	char *i, *j;
-	int cant;
+	char c;
+	int cant,a;
 
 	va_list fp;
 	va_start(fp, fmt);
@@ -104,20 +111,28 @@ int scanf(char * fmt,  ...){
 
 		if(*i == '%'){
 
-			aux = va_arg(fp, void*);
-
 			switch(*(++i)){
 
-				case 'c': *aux = getc();
+				case 'c': *aux = va_arg(fp, int);
+                          *aux = getc();
                           cant++;
                           break;
 
-				case 's': for( ; *j != 0 ; j++){
-                               *j = getc();
-                          }
-                          aux = j;
-                          cant++;
-                          break;
+				case 's':   a = 0;
+                            c = getc();
+                            putc(c);
+                            while(c != '\n'){
+                                    j[a] = c;
+                                    putc(j[a++]);
+                                    c = getc();
+                            }
+                            j[a] = 0;
+                            aux = va_arg(fp, char*);
+                            strcpy(aux,j);
+                            printf("%s", aux);
+                            cant++;
+                            break;
+
             }
 		}
 	}
@@ -138,8 +153,4 @@ int strcmp(char* s1, char* s2){
 	}
 
 	return 0;
-}
-
-void strcpy(char *s1, char *s2){
-    while (*s1++ = *s2++);
 }
