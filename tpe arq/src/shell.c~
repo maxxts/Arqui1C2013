@@ -98,8 +98,14 @@ void initializeShell() {
 
 void showSplashScreen(){
 
-	printf("<<<<< BIENVENIDO >>>>>\n\n");
+printf("	  ___  ____  ____     ___  ____  ____   __  ____  __  _  _  ____  \n");
+printf("	 / __)(  __)(_  _)   / __)(  _ \\(  __) / _\\(_  _)(  )/ )( \\(  __) \n");
+printf("	( (_ \\ ) _)   )(    ( (__  )   / ) _) /    \\ )(   )( \\ \\/ / ) _)  \n");
+printf("	 \\___/(____) (__)    \\___)(__\\_)(____)\\_/\\_/(__) (__) \\__/ (____) \n\n");
 
+printf("Bienvenido a GetCreativeOS! \nPara ver la lista de comandos ingrese \"help\".\n\n");
+printf("************************************************************************\n");
+                                                                                  
 }
 
 void addToInput( char c ){
@@ -119,27 +125,65 @@ void checkInput(){
                 case 'l':   if(strcmp("lspci",shellInput) == 0){
                                 printf("Ejecutando \"lspci\"...\n");
                             }else{
-                                printf("Comando Invalido.Pruebe \"lspci\".\n");
+                                printf("Comando Invalido. Pruebe \"lspci\" o consulte \"help\".\n");
                             }
                             break;
 
                 case 'b':   if(strcmp("burnproc", shellInput) == 0){
                                  printf("Ejecutando \"burnproc\"...\n");
                             }else{
-                                printf("Comando Invalido. Pruebe \"burnproc\".\n");
+                                printf("Comando Invalido. Pruebe \"burnproc\" o consulte \"help\".\n");
+                            }
+                            break;
+                            
+                case 'c':   if(strcmp("clear", shellInput) == 0){
+                                 clearScreen();
+                            }else{
+                                printf("Comando Invalido. Pruebe \"clear\" o consulte \"help\".\n");
+                            }
+                            break;
+                            
+                case 'h':   if(strcmp("help", shellInput) == 0){
+                                 showHelp();
+                            }else{
+                                printf("Comando Invalido. Pruebe \"help\".\n");
                             }
                             break;
                 default:
-                		printf("Comando Invalido.\n");
+                		printf("Comando Invalido. Consulte \"help\" para ver todos los comandos.\n");
                 		break;
 	}
+
+}
+
+void showHelp(){
+	printf("LISTA DE COMANDOS\n");
+	printf("************************************************************************\n");
+
+	printf("\"burnproc\" >> Levanta la temperatura del procesador.\n");
+	
+	printf("\"clear\" >> Limpia la pantalla.\n");
+
+	printf("\"help\" >> Muestra la lista de comandos.\n");
+
+	printf("\"lspci\" >> Muestra la lista de los dispositivos PCI.\n");
+
+	printf("************************************************************************\n");
+
+
+}
+
+void clearScreen(){
+
+	
+	//LIMPIO EL VIDEO	
 
 }
 
 
 void printShell(){
 
-	printf("user@OurOS:~$ ");
+	printf("user@GetCreative:~$ ");
 }
 
 int MaxReached() {

@@ -62,7 +62,7 @@ void videoClear(char * video){
 	int i=0;
 	while(i < (MAX_COLS*MAX_ROWS*2)) {
 
-		if (i > MAX_COLS*2) {
+		if (i >= MAX_COLS*2) {
 			video[i]=' ';
 			i++;
 			video[i]=GREEN_TXT;
@@ -88,16 +88,52 @@ void writeScreen(char * video, int col, int row, char c)
 	return;
 }
 
-int checkPosition(video)
+char readScreen(char * video, int col, int row)
+{
+	return video[ 2*(col) + 2*(row)*(MAX_COLS) ];
+	
+}
+
+int checkPosition(char * video)
 {
 	if(cCol == (MAX_COLS - 1)){
 		if(cRow == MAX_ROWS - 1){
-				//SCROLL
+				pageDown(video);
 		} else {
 			cRow++;
 			cCol = 0;
 		}
 	}	
+}
+
+void pageDown(char * video){
+
+	//Desplazo la pantalla 1posicion hacia arriba.
+	int rw,cl,nextRw;
+	char toCpy
+	
+	
+	for (rw = 1, nextRw = rw + 1; nextRw < MAX_ROWS; rw++,nextRw++){
+		
+		//Copio cada posicion desde nextRow y la copio en Row (hacia atras)
+		for (cl=0; cl<MAX_COLS;cl++)
+		{
+			toCpy = readScreen(video,cl,nextRw); //levanto caracter
+			writeScreen(video, cl, rw,toCpy);
+		}
+	}
+	
+	// BORRO LA ULTIMA LINEA
+	for (cl =0; cl < MAX_COLS; cl++)
+	{
+	
+		writeScreen(video, cl, MAX_ROWS - 1,toCpy);
+	
+	}
+	
+	//Me vuelvo a parar en el principio de la linea
+	cCol = 0;
+	
 }
 
 int videoPrintChar (char* video, char c){
@@ -106,7 +142,7 @@ int videoPrintChar (char* video, char c){
 	
 	checkPosition(video);
 
-	writeScreen(video,0,0, (char) cCol);
+	//writeScreen(video,0,0, (char) cCol);
 	
 	switch(c){
 		//Pregunto por "Enter", "Tab" y "Backspace"
@@ -141,11 +177,12 @@ void tabKey(char * video) {
 
 void enterKey(char * video) { 
 
-	if (cRow < MAX_ROWS){
+	if (cRow == MAX_ROWS - 1){
+		pageDown(video);
+	}else{
 		cRow++;
 		cCol=0;
-	}else{
-		//scroll	
+			
 	}
 	return;
 
