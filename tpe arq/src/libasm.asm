@@ -83,7 +83,14 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 	out 	70h, al
 	in 	al,71h
 	push 	eax			; Lo paso como parametro
-        			
+
+
+	;LECTURA DE TEMPERATURA
+
+	mov 	eax, 0
+	mov	ecx, 19Ch
+	rdmsr	
+        push 	eax			
 				                
         ;LLAMADA A FUNCION DE KERNEL.C
         
@@ -93,6 +100,7 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 	pop 	eax
 	pop 	eax
 	pop 	eax
+	pop	eax
 	
 	
 	popa                            

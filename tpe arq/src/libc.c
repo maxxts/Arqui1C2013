@@ -128,9 +128,6 @@ int scanf(char * fmt,  ...){
                                     c = getc();
                             }
                             aux[a] = 0;
-                            //aux = va_arg(fp, char*);
-                            //strcpy(aux,j);
-                            printf("%s\n", aux);
                             cant++;
                             break;
 
@@ -140,6 +137,20 @@ int scanf(char * fmt,  ...){
 
 	va_end(fp);
 	return cant;
+}
+
+int strcmp(char* s1, char* s2){
+	int resp;
+    int i;
+
+	for(i=0 ; s1[i] || s2[i] ; i++){
+		resp = s1[i]-s2[i];
+		if(resp != 0){
+			return resp;
+		}
+	}
+
+	return 0;
 }
 
 
@@ -177,16 +188,3 @@ void itoa (int number, char *buffer)
 
 }
 
-int strcmp(char* s1, char* s2){
-	int resp;
-    int i;
-
-	for(i=0 ; s1[i] || s2[i] ; i++){
-		resp = s1[i]-s2[i];
-		if(resp != 0){
-			return resp;
-		}
-	}
-
-	return 0;
-}

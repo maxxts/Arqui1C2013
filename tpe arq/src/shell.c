@@ -116,6 +116,28 @@ void addToInput( char c ){
 
 }
 
+void burnProc(){
+
+    long i;
+    int progreso = 0;
+    int j = 20;
+    float f = 123.45;
+    float g = 456.32;
+
+    for(i=0 ; i<100000000 ; i++){
+        if(i%10000000 == 0){
+            progreso += 10;
+            printf("Progreso: %d/100 \n", progreso);
+        }
+        f *= g;
+        f /= 34;
+        j *= 30;
+    }
+
+    printf("Finalizado!\n");
+
+}
+
 void checkInput(){
 
 	//Leo el INPUT y comparo con los comandos
@@ -132,6 +154,7 @@ void checkInput(){
 
                 case 'b':   if(strcmp("burnproc", shellInput) == 0){
                                  printf("Ejecutando \"burnproc\"...\n");
+                                 burnProc();
                             }else{
                                 printf("Comando Invalido. Pruebe \"burnproc\" o consulte \"help\".\n");
                             }
@@ -192,3 +215,9 @@ int MaxReached() {
 	return inputPos == MAX_INPUT - 1;
 
 }
+
+
+
+
+
+

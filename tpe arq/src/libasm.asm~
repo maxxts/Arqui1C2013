@@ -68,22 +68,29 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
         
         mov 	eax, 0			; Borro ax
         mov 	al, 0h			; Leo las SEG del RTC
-	out 	74h, al
-	in 	al,75h
+	out 	70h, al
+	in 	al,71h
 	push 	eax			; Lo paso como parametro
 	
 	mov 	eax, 0
 	mov 	al, 2h			; Leo las MIN del RTC
-	out 	74h, al
-	in 	al,75h
+	out 	70h, al
+	in 	al,71h
 	push 	eax			; Lo paso como parametro
 	
 	mov 	eax, 0
 	mov 	al, 4h			; Leo las HS del RTC
-	out 	74h, al
-	in 	al,75h
+	out 	70h, al
+	in 	al,71h
 	push 	eax			; Lo paso como parametro
-        			
+
+
+	;LECTURA DE TEMPERATURA
+
+	mov 	eax, 0
+	mov	ecx, 19Ch
+	rdmsr	
+        push 	eax			
 				                
         ;LLAMADA A FUNCION DE KERNEL.C
         

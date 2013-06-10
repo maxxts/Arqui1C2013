@@ -15,7 +15,7 @@ IDTR idtr;				/* IDTR */
 long int ticks=0;
 char* video = (char *)0xb8000;
 
-void int_08(int hs, int min, int seg) {
+void int_08(int temp, int hs, int min, int seg) {
 
 		int hs1,hs2,min1,min2,seg1,seg2;
 
@@ -30,10 +30,14 @@ void int_08(int hs, int min, int seg) {
 		char strHs[2];
 		char strMin[2];
 		char strSeg[2];
-		char * strTemp = "80";
+		char strTemp[3];
+
+		temp = temp & 0x007F0000;
+		temp = temp >> 16;
+		printf("Temp: %d\n",temp);
 
 		hs1 = hs >> 4; // OBTENGO PRIMER DIGITO
-		hs2 = hs & 0x000F;
+		hs2 = hs & 0x000F; //OBTENGO SEGUNDO DIGITO
 
 		min1 = min >> 4;
 		min2 = min & 0x000F;
