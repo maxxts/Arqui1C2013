@@ -33,7 +33,7 @@ void int_08(int hs, int min, int seg) {
 		char * strTemp = "80";
 
 		hs1 = hs >> 4; // OBTENGO PRIMER DIGITO
-		hs2 = hs & 0x000F;
+		hs2 = hs & 0x000F; //OBTENGO SEGUNDO DIGITO
 
 		min1 = min >> 4;
 		min2 = min & 0x000F;
@@ -88,39 +88,7 @@ int getPciList(){
 */
 
 
-void itoa (int number, char *buffer)
-{
-   char *p = buffer;
-   char *p1, *p2;
-   unsigned long ud = number;
-   int divisor = 10;
 
-
-   /* Divide ud ( parte del número, ejemplo: 123 -> ud = 3 / ud = 2 / ud = 1) */
-   do
-     {
-       int remainder = ud % divisor;
-
-       *p++ = remainder + '0';
-     }
-   while (ud /= divisor);
-
-   /* Termina el buffer */
-   *p = 0;
-
-   /* Da vuelta el buffer, porque los va guardando al revés */
-   p1 = buffer;
-   p2 = p - 1;
-   while (p1 < p2)
-     {
-       char tmp = *p1;
-       *p1 = *p2;
-       *p2 = tmp;
-       p1++;
-       p2--;
-     }
-
- }
 
  void clearVideoScreen(){
 

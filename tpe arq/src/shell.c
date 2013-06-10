@@ -124,11 +124,6 @@ void checkInput(){
 	switch(first){
 
                 case 'l':   if(strcmp("lspci",shellInput) == 0){
-                                char * c;
-                                scanf("%s", c);
-                                printf("Puse: %s\n",c);
-                                printf("Puse: %s\n",c);
-                                printf("Puse: %s\n",c);
                                 printf("Ejecutando \"lspci\"...\n");
                             }else{
                                 printf("Comando Invalido. Pruebe \"lspci\" o consulte \"help\".\n");
