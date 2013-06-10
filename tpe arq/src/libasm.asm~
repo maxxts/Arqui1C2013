@@ -88,7 +88,8 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 	;LECTURA DE TEMPERATURA
 
 	mov 	eax, 0
-	mov	ecx, 19Ch
+	mov	edx, 0
+	mov	ecx, 19dh
 	rdmsr	
         push 	eax			
 				                
@@ -100,6 +101,7 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 	pop 	eax
 	pop 	eax
 	pop 	eax
+	pop	eax
 	
 	
 	popa                            

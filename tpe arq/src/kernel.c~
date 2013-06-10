@@ -34,7 +34,7 @@ void int_08(int temp, int hs, int min, int seg) {
 
 		temp = temp & 0x007F0000;
 		temp = temp >> 16;
-		printf("Temp: %d\n",temp);
+		//printf("Temp: %d\n",temp);
 
 		hs1 = hs >> 4; // OBTENGO PRIMER DIGITO
 		hs2 = hs & 0x000F; //OBTENGO SEGUNDO DIGITO
@@ -51,13 +51,15 @@ void int_08(int temp, int hs, int min, int seg) {
 		itoa(min1,strMin1); itoa(min2,strMin2);
 		itoa(seg1,strSeg1); itoa(seg2,strSeg2);
 
+		itoa(temp,strTemp);
+
 		strHs[0] = strHs1[0]; strHs[1] = strHs2[0];
 		strMin[0] = strMin1[0]; strMin[1] = strMin2[0];
 		strSeg[0] = strSeg1[0]; strSeg[1] = strSeg2[0];
 
 
 
-		printSystemInfo(video,strHs,strMin,strSeg,"80");
+		printSystemInfo(video,strHs,strMin,strSeg,strTemp);
 
 
 
@@ -94,10 +96,19 @@ int getPciList(){
 
 
 
- void clearVideoScreen(){
+void clearVideoScreen(){
 
  	videoClear(video);
- }
+}
+
+
+void listPci(){
+
+	
+
+}
+
+
 
 
 

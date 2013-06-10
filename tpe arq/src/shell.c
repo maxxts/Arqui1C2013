@@ -204,6 +204,12 @@ void clearScreen(){
 
 }
 
+void lspci() {
+
+	listPci();
+
+}
+
 
 void printShell(){
 
