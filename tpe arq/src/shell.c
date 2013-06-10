@@ -176,7 +176,7 @@ void showHelp(){
 void clearScreen(){
 
 	
-	//LIMPIO EL VIDEO	
+	clearVideoScreen();	
 
 }
 

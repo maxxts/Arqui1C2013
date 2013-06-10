@@ -41,8 +41,7 @@ size_t __read(int fd, void* buffer, size_t count);
 
 void intToString(int a, char * str);
 
-//void itoa (int number, char *buffer);
+void itoa (int number, char *buffer);
 
-void itoa (char *buffer, int base, int number);
 
 #endif

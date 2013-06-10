@@ -40,6 +40,31 @@ void int_08(int hs, int min, int seg) {
 
 }
 
+//http://faculty.qu.edu.qa/rriley/cmpt507/minix/lspci_8c-source.html
+/*
+int getPciList(){
+         struct pciinfo_entry *entry;
+         struct pciinfo pciinfo;
+
+       // obtain a list of PCI devices from PM
+        if (getsysinfo())
+        {
+                printf("getsysinfo failed");
+                return -1;
+        }
+
+        // print the list of devices
+         entry = pciinfo.pi_entries;
+         while (pciinfo.pi_count-- > 0)
+        {
+             printf("%.4X:%.4X %s\n", entry->pie_vid, entry->pie_did, entry->pie_name);
+               entry++;
+         }
+
+      return 0;
+}
+*/
+
 
 void itoa (int number, char *buffer)
 {
@@ -73,6 +98,11 @@ void itoa (int number, char *buffer)
        p2--;
      }
 
+ }
+ 
+ void clearVideoScreen(){
+ 
+ 	videoClear(video);
  }
 
 
@@ -133,7 +163,7 @@ kmain()
 
 	initializeShell();
 
-        
+
 
 }
 

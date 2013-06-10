@@ -38,6 +38,8 @@ size_t __write(int fd, const void* buffer, size_t count);
 **/
 size_t __read(int fd, void* buffer, size_t count);
 
+void clearVideoScreen();
+
 
 void intToString(int a, char * str);
 
