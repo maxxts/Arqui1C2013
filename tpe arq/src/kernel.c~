@@ -16,18 +16,40 @@ long int ticks=0;
 char* video = (char *)0xb8000;
 
 void int_08(int hs, int min, int seg) {
-
-
-
+		
+		int hs1,hs2,min1,min2,seg1,seg2;
+		
+		char strHs1[2];
+		char strMin1[2];
+		char strSeg1[2];
+		
+		char strHs2[2];
+		char strMin2[2];
+		char strSeg2[2];
 
 		char strHs[2];
 		char strMin[2];
 		char strSeg[2];
 		char * strTemp = "80";
+		
+		hs1 = hs >> 4; // OBTENGO PRIMER DIGITO
+		hs2 = hs & 0x000F;
+		
+		min1 = min >> 4;
+		min2 = min & 0x000F;
+		
+		seg1 = seg >> 4;
+		seg2 = seg & 0x000F;
+		
+		
 
-		itoa(hs,strHs);
-		itoa(min,strMin);
-		itoa(seg,strSeg);
+		itoa(hs1,strHs1); itoa(hs2,strHs2);
+		itoa(min1,strMin1); itoa(min2,strMin2);
+		itoa(seg1,strSeg1); itoa(seg2,strSeg2);
+		
+		strHs[0] = strHs1[0]; strHs[1] = strHs2[0];
+		strMin[0] = strMin1[0]; strMin[1] = strMin2[0];
+		strSeg[0] = strSeg1[0]; strSeg[1] = strSeg2[0];
 
 
 
@@ -101,7 +123,8 @@ void itoa (int number, char *buffer)
  }
  
  void clearVideoScreen(){
- 	videoClear();
+ 
+ 	videoClear(video);
  }
 
 
