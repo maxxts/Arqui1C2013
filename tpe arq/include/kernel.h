@@ -42,5 +42,7 @@ void clearVideoScreen();
 
 void listPci();
 
+void printPci(int vendor, int device);
+
 
 #endif

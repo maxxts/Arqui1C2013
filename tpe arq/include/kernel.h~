@@ -40,5 +40,7 @@ size_t __read(int fd, void* buffer, size_t count);
 
 void clearVideoScreen();
 
+void listPci();
+
 
 #endif

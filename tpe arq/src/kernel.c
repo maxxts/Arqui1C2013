@@ -7,6 +7,10 @@
 #define STD_OUT 1
 #define STD_IN 0
 
+extern int _readPci(int pos);
+
+
+
 
 
 DESCR_INT idt[0xA];			/* IDT de 10 entradas*/
@@ -103,12 +107,32 @@ void clearVideoScreen(){
 
 
 void listPci(){
+	
+	
 
-	//ASM
+	int pciInfo, i=0;
+	int vendorId,deviceId;
+	do{
+		
+		pciInfo = _readPci(i++);
+		
+		//OBTENGO VENDORID Y DEVICEID
+		vendorId = pciInfo & 0x0000FFFF;
+		deviceId = pciInfo & 0xFFFF0000;
+		deviceId = deviceId >> 16;
+
+		printPci(vendorId,deviceId);
+
+	}while(vendorId != 0);
 
 }
 
 
+void printPci(int vendor, int device){
+
+	printf("Vendor > %d | Device > %d \n",vendor,device);
+
+}
 
 
 

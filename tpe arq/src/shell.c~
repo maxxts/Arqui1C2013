@@ -181,6 +181,14 @@ void checkInput(){
 }
 
 void showHelp(){
+	
+	int hexa = 25;
+	char * str;
+	
+	hexToString(hexa,str);
+	
+	printf("Mi numero: %d >> %s \n",hexa,str);
+	
 	printf("LISTA DE COMANDOS\n");
 	printf("************************************************************************\n");
 
@@ -193,6 +201,8 @@ void showHelp(){
 	printf("\"lspci\" >> Muestra la lista de los dispositivos PCI.\n");
 
 	printf("************************************************************************\n");
+	
+	
 
 
 }
@@ -201,6 +211,12 @@ void clearScreen(){
 
 
 	clearVideoScreen();
+
+}
+
+void lspci() {
+
+	listPci();
 
 }
 

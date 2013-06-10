@@ -22,5 +22,7 @@ void 		_keyboardHandler();    /*Interrupcion de teclado */
 
 
 
+
+
 void		_debug (void);
 

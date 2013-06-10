@@ -1,6 +1,7 @@
 GLOBAL  _read_msw,_lidt
 GLOBAL  _int_08_hand
 GLOBAL  _keyboardHandler
+GLOBAL  _readPci
 
 GLOBAL  _mascaraPIC1,_mascaraPIC2,_Cli,_Sti
 GLOBAL  _debug
@@ -112,17 +113,17 @@ _int_08_hand:				; Handler de INT 8 ( Timer tick)
 _keyboardHandler:			; Handler de INT 9 ( Keyboard )
 	
 	push    ds
-        push    es          ; Se salvan los registros
-        pusha               ; Carga de DS y ES con el valor del selector
+        push    es          		; Se salvan los registros
+        pusha               		; Carga de DS y ES con el valor del selector
         mov     ax, 10h		
         mov     ds, ax
         mov     es, ax      
         
-        mov 	eax, 0		; Limpio ah
-        in 	al, 60h		; Puerto de datos del teclado
-        push	eax             ; Paso scancode como parametro
+        mov 	eax, 0			; Borro el registro A
+        in 	al, 60h			; Leo el puerto de teclado
+        push	eax             	; Paso el ScanCode como parametro
         call    int_09
-        mov	al,20h		; Envio de EOI generico al PIC
+        mov	al,20h			; Envio de EOI generico al PIC
 	out 	20h,al
 	pop 	eax
 		
@@ -130,6 +131,35 @@ _keyboardHandler:			; Handler de INT 9 ( Keyboard )
         pop     es
         pop     ds
         iret
+
+_readPci:
+
+	pop	ax			; Levanto parametro i
+	
+	push	ebp
+	mov	ebp,esp
+	
+	out	20h,ax
+	in	ax,20h
+	
+	;AX tiene la posicion del PCI
+	
+	mov	dx,ax
+	mov	al,0h
+	
+	out	dx,al
+	in	eax,dx
+	
+	;EAX tiene VendorID+DeviceID 
+		
+	mov esp,ebp
+	pop ebp
+
+	ret
+
+
+
+
         
 
 
