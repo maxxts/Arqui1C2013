@@ -31,15 +31,16 @@ void initializeShell() {
 
 		while(1)
 		{
+
 			char inChar;
 			inChar = getc();
-			
+
 			//Verifico haber recibido un caracter
 			if (inChar!=EOF)
 			{
-			
-				 
-			
+
+
+
 				if (inChar == '\t'){
 
 					//Inhibo el TAB en la linea de comandos
@@ -82,8 +83,8 @@ void initializeShell() {
 
 
 				}
-				
-				
+
+
 			}
 
 
@@ -105,7 +106,7 @@ printf("	 \\___/(____) (__)    \\___)(__\\_)(____)\\_/\\_/(__) (__) \\__/ (____)
 
 printf("Bienvenido a GetCreativeOS! \nPara ver la lista de comandos ingrese \"help\".\n\n");
 printf("************************************************************************\n");
-                                                                                  
+
 }
 
 void addToInput( char c ){
@@ -118,11 +119,16 @@ void addToInput( char c ){
 void checkInput(){
 
 	//Leo el INPUT y comparo con los comandos
-	
+
 	char first=shellInput[0];
 	switch(first){
 
                 case 'l':   if(strcmp("lspci",shellInput) == 0){
+                                char * c;
+                                scanf("%s",&c);
+                                printf("Puse: %s\n",c);
+                                printf("Puse: %s\n",c);
+                                printf("Puse: %s\n",c);
                                 printf("Ejecutando \"lspci\"...\n");
                             }else{
                                 printf("Comando Invalido. Pruebe \"lspci\" o consulte \"help\".\n");
@@ -135,14 +141,14 @@ void checkInput(){
                                 printf("Comando Invalido. Pruebe \"burnproc\" o consulte \"help\".\n");
                             }
                             break;
-                            
+
                 case 'c':   if(strcmp("clear", shellInput) == 0){
                                  clearScreen();
                             }else{
                                 printf("Comando Invalido. Pruebe \"clear\" o consulte \"help\".\n");
                             }
                             break;
-                            
+
                 case 'h':   if(strcmp("help", shellInput) == 0){
                                  showHelp();
                             }else{
@@ -161,7 +167,7 @@ void showHelp(){
 	printf("************************************************************************\n");
 
 	printf("\"burnproc\" >> Levanta la temperatura del procesador.\n");
-	
+
 	printf("\"clear\" >> Limpia la pantalla.\n");
 
 	printf("\"help\" >> Muestra la lista de comandos.\n");
@@ -175,8 +181,8 @@ void showHelp(){
 
 void clearScreen(){
 
-	
-	//LIMPIO EL VIDEO	
+
+	clearVideoScreen();
 
 }
 

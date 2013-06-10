@@ -120,16 +120,17 @@ int scanf(char * fmt,  ...){
 
 				case 's':   a = 0;
                             c = getc();
-                            putc(c);
+                            //putc(c);
+			    aux = va_arg(fp, char*);
                             while(c != '\n'){
-                                    j[a] = c;
-                                    putc(j[a++]);
+                                    aux[a] = c;
+                                    putc(aux[a++]);
                                     c = getc();
                             }
-                            j[a] = 0;
-                            aux = va_arg(fp, char*);
-                            strcpy(aux,j);
-                            printf("%s", aux);
+                            aux[a] = 0;
+                            //aux = va_arg(fp, char*);
+                            //strcpy(aux,j);
+                            printf("%s\n", aux);
                             cant++;
                             break;
 
