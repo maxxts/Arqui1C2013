@@ -108,10 +108,8 @@ unsigned short pciCheckVendor(unsigned short bus, unsigned short slot)
     /* vendors that == 0xFFFF, it must be a non-existent device. */
 
     if ((vendor = pciConfigReadWord(bus,slot,0,0)) != 0xFFFF) {
-       	  device = pciConfigReadWord(bus,slot,0,2);
-       		printPci(vendor,device);
-
-
+            device = pciConfigReadWord(bus,slot,0,2);
+            printPci(vendor,device);
     }
 
     	/*pciInfo = pciConfigReadWord(bus,slot,0,0);
@@ -139,13 +137,6 @@ void listPci(void) {
 }
 
  //http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
-
-
-void printPci(int vendor, int device){
-
-	printf("Vendor > %d | Device > %d \n",vendor,device);
-
-}
 
 size_t __write(int fd, const void* buffer, size_t count) {
 
@@ -9024,7 +9015,35 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x11D5, 0x0117, "10117", "Versatec Parallel Interface (VPI) + Centronics" } ,
 	{ 0x11D5, 0x0118, "10118", "DR11-W emulator" } ,
 } ;
+void printPci(int vendor, int device){
 
+    int i,flag=1;
+    char *venShort, *venFull, *chip, *chipDesc;
+
+    printf("%d | %d", vendor, device);
+
+    for( i=0 ; i<1567 && flag ; i++){//1567
+        if(PciVenTable[i].VenId == vendor){
+            venShort = PciVenTable[i].VenShort;
+            venFull = PciVenTable[i].VenFull;
+            printf(" | %s | %s", venShort, venFull);
+            flag = 0;
+        }
+    }
+
+    flag = 1;
+
+    for(i=0 ; i<7223 && flag; i++){//7223
+        if(PciDevTable[i].DevId == device){
+            chip = PciDevTable[i].Chip;
+            chipDesc = PciDevTable[i].ChipDesc;
+            printf(" | %s | %s", chip, chipDesc);
+            flag = 0;
+        }
+    }
+
+    printf("\n");
+}
 
 
 
