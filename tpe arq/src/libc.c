@@ -6,6 +6,7 @@
 #define STD_IN 0
 
 
+
 /***************************************************************
 *k_clear_screen
 *
@@ -188,22 +189,6 @@ void itoa (int number, char *buffer)
 
 }
 
-//http://www.daniweb.com/software-development/c/threads/229614/integer-to-hex-conversion-s-only
-void hexToString(int value, char hexstring[]) {
-    
-        int number;
-        n = number;
-        int i;
-        hexstring[0] = '0';
-        hexstring[1] = 'x';
-        while (number != '0')
-        {
-		i = 2;
-		hexstring[i] = (number%16) < 10 ? (number%16) : 'A' + (number%16) - 10;
-		i++;
-        }
-
-}
 
 
 

@@ -182,14 +182,11 @@ void checkInput(){
 
 void showHelp(){
 	
-	int hexa = 25;
-	char * str;
-	
-	hexToString(hexa,str);
-	
-	printf("Mi numero: %d >> %s \n",hexa,&str);
+		
+	printf("Mi numero: %d >> %s \n",hexa,str);
 	
 	printf("LISTA DE COMANDOS\n");
+	
 	printf("************************************************************************\n");
 
 	printf("\"burnproc\" >> Levanta la temperatura del procesador.\n");
