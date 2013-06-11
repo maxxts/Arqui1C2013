@@ -206,8 +206,6 @@ kmain()
 
 }
 
-
-/*
 typedef struct _PCI_VENTABLE
 {
 	unsigned short	VenId ;
@@ -9026,7 +9024,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x11D5, 0x0117, "10117", "Versatec Parallel Interface (VPI) + Centronics" } ,
 	{ 0x11D5, 0x0118, "10118", "DR11-W emulator" } ,
 } ;
-*/
+
 
 
 
