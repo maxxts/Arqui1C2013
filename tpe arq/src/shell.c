@@ -21,6 +21,13 @@ char shellInput[MAX_INPUT + 1]; //Ultimo espacio reservado para cerrar la cadena
 char inputPos = 0;
 
 
+void lspci() {
+
+	listPci();
+
+}
+
+
 
 void initializeShell() {
 
@@ -146,7 +153,7 @@ void checkInput(){
 	switch(first){
 
                 case 'l':   if(strcmp("lspci",shellInput) == 0){
-                                printf("Ejecutando \"lspci\"...\n");
+                                lspci();
                             }else{
                                 printf("Comando Invalido. Pruebe \"lspci\" o consulte \"help\".\n");
                             }
@@ -183,8 +190,7 @@ void checkInput(){
 void showHelp(){
 	
 		
-	printf("Mi numero: %d >> %s \n",hexa,str);
-	
+		
 	printf("LISTA DE COMANDOS\n");
 	
 	printf("************************************************************************\n");
@@ -211,11 +217,7 @@ void clearScreen(){
 
 }
 
-void lspci() {
 
-	listPci();
-
-}
 
 
 void printShell(){

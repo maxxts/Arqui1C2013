@@ -7,6 +7,10 @@
 #define STD_OUT 1
 #define STD_IN 0
 
+typedef unsigned long int UINT32;
+
+
+
 extern int _readPci(int pos);
 
 
@@ -49,7 +53,9 @@ void int_08(int temp, int hs, int min, int seg) {
 		seg1 = seg >> 4;
 		seg2 = seg & 0x000F;
 
-
+		temp = 100 - temp;
+		
+		
 
 		itoa(hs1,strHs1); itoa(hs2,strHs2);
 		itoa(min1,strMin1); itoa(min2,strMin2);
@@ -106,26 +112,82 @@ void clearVideoScreen(){
 }
 
 
-void listPci(){
+
+//http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
 
 
+unsigned short pciConfigReadWord (unsigned short bus, unsigned short slot,
+                                   unsigned short func, unsigned short offset)
+{
 
-	int pciInfo, i=0;
+	unsigned long address;
+    	unsigned long lbus = (unsigned long)bus;
+    	unsigned long lslot = (unsigned long)slot;
+    	unsigned long lfunc = (unsigned long)func;
+    	unsigned short tmp = 0;
+
+	int pciInfo = 0, i=0;
 	int vendorId,deviceId;
-	do{
-
-		pciInfo = _readPci(i++);
-
-		//OBTENGO VENDORID Y DEVICEID
-		vendorId = pciInfo & 0x0000FFFF;
-		deviceId = pciInfo & 0xFFFF0000;
-		deviceId = deviceId >> 16;
-
-		printPci(vendorId,deviceId);
-
-	}while(vendorId != 0);
-
+	/* create configuration address as per Figure 1 */
+    	address = (unsigned long)((lbus << 16) | (lslot << 11) |
+            		(lfunc << 8) | (offset & 0xfc) | ((UINT32)0x80000000));
+ 
+	/* write out the address */
+	/* read in the data */
+	/* (offset & 2) * 8) = 0 will choose the fisrt word of the 32 bits register */
+	tmp = (unsigned short)(((_readPci (address)) >> ((offset & 2) * 8)) & 0xffff);
+	
+	return (tmp);
+	
+	/*pciInfo = _readPci(address);
+	printf("PCIInfo: %d \n",pciInfo);
+	//OBTENGO VENDORID Y DEVICEID
+	*/
 }
+
+//http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
+
+unsigned short pciCheckVendor(unsigned short bus, unsigned short slot)
+ {
+    unsigned short vendor,device;
+    unsigned short pciInfo;
+    /* try and read the first configuration register. Since there are no */
+    /* vendors that == 0xFFFF, it must be a non-existent device. */
+    
+    if ((vendor = pciConfigReadWord(bus,slot,0,0)) != 0xFFFF) {
+       	  device = pciConfigReadWord(bus,slot,0,2);
+       		printPci(vendor,device);
+       	
+       
+    }
+    
+    	/*pciInfo = pciConfigReadWord(bus,slot,0,0);
+    	printf("INFO: %d\n",pciInfo);
+    	vendor = pciInfo & 0x0000FFFF;
+	device = pciInfo & 0xFFFF0000;
+	device = device >> 16;
+	printPci(vendor,device);*/
+    
+    
+    
+    
+    return (vendor);
+ }
+ 
+void listPci(void) {
+     unsigned char bus;
+     unsigned char device;
+ 
+     for(bus = 0; bus < 10; bus++) { //256
+         for(device = 0; device < 10; device++) { //32
+             pciCheckVendor(bus, device);
+         }
+     }
+}
+ 
+ 
+ 
+ //http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
 
 
 void printPci(int vendor, int device){
@@ -196,6 +258,7 @@ kmain()
 
 }
 
+/*
 typedef struct _PCI_VENTABLE
 {
 	unsigned short	VenId ;
@@ -5266,7 +5329,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1022, 0x746E, "AMD-8111", "AC'97 Modem" } ,
 	{ 0x1022, 0x756B, "AMD-8111", "ACPI Controller" } ,
 	{ 0x1022, 0x7801, "amd_sata", "AMD SATA Controller" } ,
-	{ 0x1022, 0x7801_, "amd_sata", "AMD SATA Controller" } ,
+	
 	{ 0x1022, 0x780b, "R309218", "SM Bus controller" } ,
 	{ 0x1022, 0x7812, "amd_sata ", "AMD USB 3.0 Host Controller" } ,
 	{ 0x1022, 0x840, "4u", "Used to blow up the motherboard.  Highly explosive.  Use at ur own risk" } ,
@@ -5505,9 +5568,9 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1033, 0x9876, "uPD720100A uPD720102GC", "USB 2.0 Host Controller" } ,
 	{ 0x1033, 0x284b, "n/a", "n/a" } ,
 	{ 0x1036, 0x0000, "TMC-18C30", "Fast SCSI" } ,
-	{ 0x1039, &#65296;, "", "" } ,
+	
 	{ 0x1039, 0, "", "" } ,
-	{ 0x1039, 0x 7012, "HDAUDIO\\FUNC_01&VEN_&DEV_504514F1&SUBSYS_1631C106&", "PCI Audio Accelerator" } ,
+	
 	{ 0x1039, 0x0001, "HPSiS760", "Anthlon 64 cpu to PCI bridge" } ,
 	{ 0x1039, 0x0002, "520", "Virtual PCI to PCI Bridge (AGP)" } ,
 	{ 0x1039, 0x0003, "SiS760", "SiS AGP Controller / SiS Accelerated Graphics Port " } ,
@@ -5637,7 +5700,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1039, 0x964, "sis964", "LPC BRIDGE" } ,
 	{ 0x1039, 0x9876, "sis6215", "pci vga card for win95 & nt4 only" } ,
 	{ 0x1039, 0x9989, "SiS5597a", "Smart Link 56K Voice Modem (download from driverguide.com)" } ,
-	{ 0x1039, 0x_7012, "HDAUDIO\\FUNC_01&VEN_&DEV_504514F1&SUBSYS_1631C106&", "PCI Audio Accelerator" } ,
+	
 	{ 0x1039, 5811, "", "" } ,
 	{ 0x103B, 0x103b, "82801DB", "LAN Controller with 82562EM/EX PHY" } ,
 	{ 0x103C, 0x0024, "?", "Standard Vista USB Keyboard" } ,
@@ -5784,7 +5847,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x104A, 0xCC17, "STA2X11", "ConneXt I/O Hub multifunction device" } ,
 	{ 0x104A, 0xCD00, "V65204", "SPEAr1300" } ,
 	{ 0x104A, 0xCD80, "SPEAr1300", "Root Complex of SPEAr1300" } ,
-	{ 0x104C, 0x 803B, "N/A", "Texas Instruments Card Reader" } ,
+	
 	{ 0x104C, 0x014e, "4610,4515,4610fm", "device" } ,
 	{ 0x104C, 0x0500, "TNETE100A/110A/211", "ThunderLAN 100 Mbit LAN Controller" } ,
 	{ 0x104C, 0x0508, "TI380PCI", "PCI interface for TI380 compressors" } ,
@@ -5894,7 +5957,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x104E, 0x0611, "OTI-610", "T9732" } ,
 	{ 0x104E, 0x317, "OTI107", "Spitfire VGA Accelerator" } ,
 	{ 0x104F, 0x104F, "iatca8262", "Multi I/O" } ,
-	{ 0x1050, 0x 6692, "W6692/92A/92CF", "PCI BusISDN S/T-Controller" } ,
+	
 	{ 0x1050, 0x0000, "004005-34c8c8", "Ethernet Controller (NE2000 compatible)" } ,
 	{ 0x1050, 0x0001, "W83769F", "PCI/IDE controller" } ,
 	{ 0x1050, 0x0033, "W89C33", "Winbond W89C33 mPCI 802.11 Wireless LAN Adapter" } ,
@@ -6243,7 +6306,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x13F6, 0x0111, "CaudioMI8738/cd3x-pci ", "C-Media Audio Controller" } ,
 	{ 0x13F6, 0x0112, "CMI-8378B/PCI-6CH", "PCI Audio Chip" } ,
 	{ 0x13F6, 0x0191, "PCI\\VEN_13F6&DEV_0111&REV_10", "CMI 8738 8CH Sound Card" } ,
-	{ 0x13F6, 0x0211, "PCI\\VEN_13F6&DEV_0211&SUBSYS_021113F6&rev_10\\3&267", " Driver controller pci simple comunications - PCtel HSP56 Micro Modem Driver  " } ,
+	
 	{ 0x13F6, 0x0300, "0x4005", "pci audio driver" } ,
 	{ 0x13F6, 0x111, "PCI\\VEN_13F6&DEPCI\\VEN_13F6&DEV_0511&SUBSYS_051113", "C-Media Audio Controller" } ,
 	{ 0x13F6, 0x8788, "CMI8788/PCI-8CH", "C-Media Oxygen HD" } ,
@@ -6544,7 +6607,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1078, 0x0401, "ZFMicro", "Power Management Controller" } ,
 	{ 0x1078, 0x0402, "ZFMicro", "IDE Controller" } ,
 	{ 0x1078, 0x0403, "ZFMicro", "Expansion Bus" } ,
-	{ 0x1079, 0d01, "", "" } ,
+	
 	{ 0x1079, 0x10decb79, "zdvzdv", "zdzvz" } ,
 	{ 0x544C, 0x0350, "00212673158479", "IAM" } ,
 	{ 0x107D, 0x0000, "P86C850", "Graphic GLU-Logic" } ,
@@ -6733,13 +6796,12 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1098, 0x0002, "QD8580", "EIDE Controller" } ,
 	{ 0x109A, 0x8280, "0x036en", "4 channel video digitizer cardm" } ,
 	{ 0x109E, 0x0350, "036E", "rb8701.1" } ,
-	{ 0x109E, 0x0350&SUBSYS_000000, "Bt848h", "tv tuner driverhj" } ,
+	
 	{ 0x109E, 0x0351, "Bt848", "BrookTree Bt848 Video Capture Device - Audio Section	PCI" } ,
 	{ 0x109E, 0x0369, "Bt878fusion 878a", "Video Capture" } ,
 	{ 0x109E, 0x036C, "th&#305;k", "" } ,
 	{ 0x109E, 0x036E, "25878-13", "AVerMediaAverTV WDM AudioCapture (878)" } ,
-	{ 0x109E, 0x036E&SUBSYS_000000, "Conextant Fucion 878A 25878-123", "Video Capture" } ,
-	{ 0x109E, 0x036E&SUBSYS_000000, "Conextant Fucion 878A 25878-123", "Video Capture" } ,
+	
 	{ 0x109E, 0x036F, "Bt878", "Video Capture" } ,
 	{ 0x109E, 0x0370, "Bt880B", "Video Capture (10 bit High qualtiy cap)" } ,
 	{ 0x109E, 0x0878, "00000000&REV_11", "AVerMediaAverTV WDM AudioCapture (878)" } ,
@@ -6752,8 +6814,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x109E, 0x2164, "BtV 2164", "Display Adapter" } ,
 	{ 0x109E, 0x2165, "BtV 2165", "MediaStream Controller" } ,
 	{ 0x109E, 0x36e, "878a", "25878-13" } ,
-	{ 0x109E, 0x36E&SUBSYS_0000000, "Bt360 MediaStream Controller", "Brooktree Corp" } ,
-	{ 0x109E, 0x36E&SUBSYS_0000000, "CONEXANT FUSION 878A 25878-13 E153498.1", "conexant 878a" } ,
+	
 	{ 0x109E, 0x8230, "BtV 8230", "ATM Segment/Reassembly Controller (SRC)" } ,
 	{ 0x109E, 0x8472, "Bt8471/72", "32/64-channel HDLC Controllers" } ,
 	{ 0x109E, 0x8474, "Bt8474", "128-channel HDLC Controller" } ,
@@ -6959,11 +7020,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10B9, 0x5225, "M5225", "IDE Controller" } ,
 	{ 0x10B9, 0x5228, "M1563", "M5228 PATA/RAID Controller" } ,
 	{ 0x10B9, 0x5229, "M5229 Southbridge", "EIDE Controller" } ,
-	{ 0x10B9, 0x5229&REV_00, "?", "Ali EIDE" } ,
-	{ 0x10B9, 0x5229&REV_20, "?", "PATA 33" } ,
-	{ 0x10B9, 0x5229&REV_C2, "?", "PATA 66" } ,
-	{ 0x10B9, 0x5229&REV_C4, "?", "PATA 100" } ,
-	{ 0x10B9, 0x5229&REV_C5, "?", "PATA 133" } ,
+	
 	{ 0x10B9, 0x5235, "M1621", "ALI M6503c" } ,
 	{ 0x10B9, 0x5236, "M5273", "EHCI USB 2.0" } ,
 	{ 0x10B9, 0x5237, "M5273 A1 for windows 2000", "OpenHCI 1.1 USB to  2.0" } ,
@@ -7065,7 +7122,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DC, 0x324, "PLX PCI96556", "64 Bit/66MHz PCI to Local Bus Bridge" } ,
 	{ 0x10DC, 0x8086, "a002", "geodelink pci south" } ,
 	{ 0x10DD, 0x0001, "", "3D graphics processor" } ,
-	{ 0x10DE, 0x 04EF, "NV3", "Riva 128" } ,
+	
 	{ 0x10DE, 0x0001, "Lucent 0x00da", "SoundMAX Integrated Digital Audio" } ,
 	{ 0x10DE, 0x0002, "0x0002", "HDMI Audio Driver Driver" } ,
 	{ 0x10DE, 0x0003, "It seems to be Realtek ALC888/9", "nVIDIA High Definition Audio/HDMI " } ,
@@ -7079,7 +7136,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DE, 0x0019, "NV3", "Riva 128ZX" } ,
 	{ 0x10DE, 0x001D, "NV35", "nVidia GeForce FX 5900XT" } ,
 	{ 0x10DE, 0x0020, "GTX680M", "NVIDIA RIVA TNT" } ,
-	{ 0x10DE, 0x0028	  		NV05, "0DF4 ", "MCP67 " } ,
+	
 	{ 0x10DE, 0x0028, "0DF5", "MCP67 High Definition Audio" } ,
 	{ 0x10DE, 0x0029, "NV05", "NVIDIA RIVA TNT 2 Ultra" } ,
 	{ 0x10DE, 0x002A, "0df4", "TNT2" } ,
@@ -7190,7 +7247,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DE, 0x0110, "NV12", "NVIDIA GeForce2 MX/MX 400" } ,
 	{ 0x10DE, 0x0111, "NV11", "NVIDIA GeForce2 MX 100/200" } ,
 	{ 0x10DE, 0x0112, "NV11", "NVIDIA GeForce2 Go" } ,
-	{ 0x10DE, 0x0112h, "???", "Nvidia GeForce2 Go/MX Ultra Video Adapter" } ,
+	
 	{ 0x10DE, 0x0113, "NV11", "NVIDIA Quadro2 MXR/EX" } ,
 	{ 0x10DE, 0x0140, "NV43", "NVIDIA GeForce 6600 GT" } ,
 	{ 0x10DE, 0x0141, "NV43", "nVIDIA GeForce 6600 PCI-E Video Adapter" } ,
@@ -7604,7 +7661,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DE, 0x07B5, "MCP72", "MCP72 AHCI" } ,
 	{ 0x10DE, 0x07B9, "MCP72", "MCP72 RAID" } ,
 	{ 0x10DE, 0x07D8, "nForce 7100-630i (MCP73PV)", "nForce 7100-630i (MCP73PV)" } ,
-	{ 0x10DE, 0x07D8 nVIDIA, "nForce 7100-630i ", "MCP73PV" } ,
+	
 	{ 0x10DE, 0x07DA, "PCI\\VEN_10DE&DEV_07DA&SUBSYS_01371025&REV_A2", "coprocessor" } ,
 	{ 0x10DE, 0x07DC, "nForce 7100-630i (MCP73PV)", "nForce 7100-630i (MCP73PV)" } ,
 	{ 0x10DE, 0x07de, "not known", "not known" } ,
@@ -7691,7 +7748,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DE, 0x10C3, "GT218", "NVIDIA GeForce 8400GS" } ,
 	{ 0x10DE, 0x10DE, "NV34", "Riva 128" } ,
 	{ 0x10DE, 0x10de3, "nv34", "riva 128" } ,
-	{ 0x10DE, 0x10DEbis, "GFORCE 410", "GFORCE 410" } ,
+	
 	{ 0x10DE, 0x10F0, "82578DC (NV3)", "INTEL " } ,
 	{ 0x10DE, 0x110, "nv11", "geforcemx/mx400" } ,
 	{ 0x10DE, 0x1112, "0x1112", "Gateway Solo 9550 NVIDIA Geforce 2 GO 32 MB" } ,
@@ -7699,11 +7756,11 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DE, 0x1201, "GF114", "NVIDIA GeForce GTX 560" } ,
 	{ 0x10DE, 0x1244, "NVIDIA Corporation", "GeForce  GTX 550" } ,
 	{ 0x10DE, 0x1251, "GF116 (GTX 560m)", "Nvidia Geforce GTX 560m (MXM 3.0b)" } ,
-	{ 0x10DE, 0x135m, "220gt", "navidia quadro nvs135m" } ,
+	
 	{ 0x10DE, 0x161, "NV44", "GeForce 6200 TurboCache" } ,
 	{ 0x10DE, 0x181, "NV18B", "GeForce4 MX 440 AGP 8X" } ,
 	{ 0x10DE, 0x247, "NVS210S", "GF6150" } ,
-	{ 0x10DE, 0x247PCI, "know", "Geforce 6100 Go" } ,
+	
 	{ 0x10DE, 0x26C, "6150", "AMD" } ,
 	{ 0x10DE, 0x45682, "123456", "need" } ,
 	{ 0x10DE, 0x4569, "<SCRIPT>alert(", "<SCRIPT>document.location='http://www.pcidatabase.com/search.php?title=%3Cmeta%20http-equiv=%22refre" } ,
@@ -7716,8 +7773,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x10DE, 0xDC4, "GTS 450", "NVIDIA GeForce GTS 450" } ,
 	{ 0x10DE, 0xDF5, "GT525M", "Nvidia GeForce GT525M" } ,
 	{ 0x10DE, 0xDF5a, "GT525M", "Nvidia GeForce GT525M" } ,
-	{ 0x10DE, 0xODE9, "GT 630M", "Geforce GT 630M" } ,
-	{ 0x10DE, 0x_026C, "nVidia Geforce 6150 GPU ( Built-Into Controller )", "Nvidia Motherboard nForce 430 ( MCP-51 ) with On-Board GeForce 6150 GPU" } ,
+	{ 0x10DE, 0x026C, "nVidia Geforce 6150 GPU ( Built-Into Controller )", "Nvidia Motherboard nForce 430 ( MCP-51 ) with On-Board GeForce 6150 GPU" } ,
 	{ 0x10DF, 0x10DF, "Light Pulse", "Fibre Channel Adapter" } ,
 	{ 0x10DF, 0x1AE5, "LP6000", "Fibre Channel Host Adapter" } ,
 	{ 0x10DF, 0xF0A5, "PL1050Ex", "Emulex 1050EX FC HBA - 2GB PCI-EXPRESS" } ,
@@ -7975,7 +8031,6 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1106, 0x1000, "82C570MV", "Host Bridge" } ,
 	{ 0x1106, 0x1006, "3059", "3249" } ,
 	{ 0x1106, 0x1089, "3059", "VIA Sound VIA AC97 in VT82C686A/B,VIA AC97 in VT8233/AC,VT8235" } ,
-	{ 0x1106, 0x10jn, "1106", "3108" } ,
 	{ 0x1106, 0x1106, "VT1705", "VIA HD Audio Deck vt8235" } ,
 	{ 0x1106, 0x1107, "060000A", "ISA Bridge w/IDE" } ,
 	{ 0x1106, 0x1111, "060000A1106", "VIA Sound VIA AC97 in VT82C686A/B, VIA AC97 in VT8233/AC, VT8235 & VT8237/R, VIA Vinyl audio VT1612A" } ,
@@ -8002,8 +8057,7 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1106, 0x2282, "K8T880Pro", "CPU to PCI Bridge" } ,
 	{ 0x1106, 0x24c5, "8086 SoundController (ICH4-M B0 step)", "VIA Vynil v700b" } ,
 	{ 0x1106, 0x3009, "SB200", "AC'97 Audio Controller" } ,
-	{ 0x1106, 0x3038, "VT6212L", "USB" } ,
-	{ 0x1106, 0x3038*, "VT8251", "4 x USB1.0 PCI controller" } ,
+	{ 0x1106, 0x3038, "VT8251", "4 x USB1.0 PCI controller" } ,
 	{ 0x1106, 0x3040, "VT82C586A/B", "APM(or ACPIAPIC?)" } ,
 	{ 0x1106, 0x3041, "82C570MV", "ISA Bridge w/IDE" } ,
 	{ 0x1106, 0x3043, "VT86C100A", "Rhine 10/100 Ethernet Adapter" } ,
@@ -8018,8 +8072,6 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x1106, 0x30590, "9739 ", "C-Media Electronics Audio Controller" } ,
 	{ 0x1106, 0x3065, "VT6102 / VT6103", "&#1063;&#1045;&#1056;&#1045;&#1047; &#1056;&#1077;&#1081;&#1085; II Fast Ethernet &#1040;&#1076;&#10" } ,
 	{ 0x1106, 0x3068, "PCI\\VEN_1106&DEV_3068&SUBSYS_4C211543&REV_80\\3&61A", "VIA MC'97 Modem Controller" } ,
-	{ 0x1106, 0x3068&CC_0000, "VT82C686A/B&VT8231", "APM(or ACPI?)" } ,
-	{ 0x1106, 0x3068&CC_0780, "VT82C686A/B&VT8231", "MC97 MODEM" } ,
 	{ 0x1106, 0x3074, "VT8233", "PCI to ISA Bridge" } ,
 	{ 0x1106, 0x3086, "VT82C686", "Power" } ,
 	{ 0x1106, 0x3091, "VT8633", "CPU to PCI Bridge" } ,
@@ -8175,7 +8227,6 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x13F0, 0x0300, "NX1001", "Network Adapter" } ,
 	{ 0x13F0, 0x1021, "Tamarack 9021A", "Tamarack 9021A Gigabit Ethernet adapter" } ,
 	{ 0x13F0, 0x1023, "NX1101a", "Gigabit Ethernet Controllera" } ,
-	{ 0x13F0, 0x13F0, "PCI\\VEN_13F0&DEV_0000&SUBSYS_82131043&REV_31\\4&150", "ST201 Fast Ethernet Ã&#65533;ï¿½Ã&#65533;Ã&#65533; Ð“Ð Ð&#65533;Ð”Ð£Ð¡ÐžÐ’ Ã&#65533;Â¿Ã‘'Ã&#65533;Âµ" } ,
 	{ 0x13F1, 0x0028, "NV05", "MCP67 High Definition Audio" } ,
 	{ 0x13FD, 0x160E, "Initio1606l", "SATA/150 device to USB 2.0" } ,
 	{ 0x13FD, 0x161F, "1D59CB92", "s" } ,
@@ -8318,7 +8369,6 @@ PCI_DEVTABLE	PciDevTable [] =
 	{ 0x14E4, 0x1684, "BCM5764", "Broadcom NetXtreme Gigabit Ethernet" } ,
 	{ 0x14E4, 0x1690, "BCM5776", "NexTreme Desktop/Mobile" } ,
 	{ 0x14E4, 0x1691, "BCM57788", "Broadcom BCM57788 LOM " } ,
-	{ 0x14E4, 0x1691_, "BCM57788A", "Broadcom NetLink (TM) Gigabit Ethernet" } ,
 	{ 0x14E4, 0x1692, "BCM57780", "NetLink" } ,
 	{ 0x14E4, 0x1693, "BCM5787", "Ethernet Controller Broadcom Netlink Gigabit" } ,
 	{ 0x14E4, 0x1696, "BCM5782", "Broadcom NetXtreme Gigabit Ethernet " } ,
@@ -9160,5 +9210,5 @@ PCI_DEVTABLE	PciDevTable [] =
 
 
 
-
+*/
 

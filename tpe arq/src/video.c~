@@ -25,33 +25,34 @@ void printSystemInfo(char * video, char * hs, char * min, char * seg, char * tem
 {
 
 	//IMPRIMO HORAS
-	writeScreen(video, 64+0, 0, hs[0]);
-	writeScreen(video, 64+1, 0, hs[1]);
+	writeScreen(video, 63+0, 0, hs[0]);
+	writeScreen(video, 63+1, 0, hs[1]);
 	
-	writeScreen(video, 64+2, 0, ':');
+	writeScreen(video, 63+2, 0, ':');
 	
 	//IMPRIMO MINUTOS
-	writeScreen(video, 64+3, 0, min[0]);
-	writeScreen(video, 64+4, 0, min[1]);
+	writeScreen(video, 63+3, 0, min[0]);
+	writeScreen(video, 63+4, 0, min[1]);
 	
-	writeScreen(video, 64+5, 0, ':');
+	writeScreen(video, 63+5, 0, ':');
 	
 	//IMPRIMO SEGUNDOS
-	writeScreen(video, 64+6, 0, seg[0]);
-	writeScreen(video, 64+7, 0, seg[1]);
+	writeScreen(video, 63+6, 0, seg[0]);
+	writeScreen(video, 63+7, 0, seg[1]);
 	
-	writeScreen(video, 64+8, 0, ' ');
+	writeScreen(video, 63+8, 0, ' ');
 	
-	writeScreen(video, 64+9, 0, 'h');
-	writeScreen(video, 64+10, 0, 's');
+	writeScreen(video, 63+9, 0, 'h');
+	writeScreen(video, 63+10, 0, 's');
 	
 	//IMPRIMO TEMPERATURA
 	
-	writeScreen(video, 64+11, 0, ' ');
-	writeScreen(video, 64+12, 0, temp[0]);
-	writeScreen(video, 64+13, 0, temp[1]);
-	writeScreen(video, 64+14, 0, ' ');
-	writeScreen(video, 64+15, 0, 'C');
+	writeScreen(video, 63+11, 0, ' ');
+	writeScreen(video, 63+12, 0, temp[0]);
+	writeScreen(video, 63+13, 0, temp[1]);
+	writeScreen(video, 63+14, 0, temp[2]);
+	writeScreen(video, 63+15, 0, ' ');
+	writeScreen(video, 63+16, 0, 'C');
 	
 	
 }
@@ -110,7 +111,7 @@ void pageDown(char * video){
 
 	//Desplazo la pantalla 1posicion hacia arriba.
 	int rw,cl,nextRw;
-	char toCpy
+	char toCpy;
 	
 	
 	for (rw = 1, nextRw = rw + 1; nextRw < MAX_ROWS; rw++,nextRw++){

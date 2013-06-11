@@ -7,6 +7,10 @@
 #define STD_OUT 1
 #define STD_IN 0
 
+typedef unsigned long int UINT32;
+
+
+
 extern int _readPci(int pos);
 
 
@@ -49,7 +53,9 @@ void int_08(int temp, int hs, int min, int seg) {
 		seg1 = seg >> 4;
 		seg2 = seg & 0x000F;
 
-
+		temp = 100 - temp;
+		
+		
 
 		itoa(hs1,strHs1); itoa(hs2,strHs2);
 		itoa(min1,strMin1); itoa(min2,strMin2);
@@ -106,26 +112,82 @@ void clearVideoScreen(){
 }
 
 
-void listPci(){
+
+//http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
 
 
+unsigned short pciConfigReadWord (unsigned short bus, unsigned short slot,
+                                   unsigned short func, unsigned short offset)
+{
 
-	int pciInfo, i=0;
+	unsigned long address;
+    	unsigned long lbus = (unsigned long)bus;
+    	unsigned long lslot = (unsigned long)slot;
+    	unsigned long lfunc = (unsigned long)func;
+    	unsigned short tmp = 0;
+
+	int pciInfo = 0, i=0;
 	int vendorId,deviceId;
-	do{
-
-		pciInfo = _readPci(i++);
-
-		//OBTENGO VENDORID Y DEVICEID
-		vendorId = pciInfo & 0x0000FFFF;
-		deviceId = pciInfo & 0xFFFF0000;
-		deviceId = deviceId >> 16;
-
-		printPci(vendorId,deviceId);
-
-	}while(vendorId != 0);
-
+	/* create configuration address as per Figure 1 */
+    	address = (unsigned long)((lbus << 16) | (lslot << 11) |
+            		(lfunc << 8) | (offset & 0xfc) | ((UINT32)0x80000000));
+ 
+	/* write out the address */
+	/* read in the data */
+	/* (offset & 2) * 8) = 0 will choose the fisrt word of the 32 bits register */
+	tmp = (unsigned short)(((_readPci (address)) >> ((offset & 2) * 8)) & 0xffff);
+	
+	return (tmp);
+	
+	/*pciInfo = _readPci(address);
+	printf("PCIInfo: %d \n",pciInfo);
+	//OBTENGO VENDORID Y DEVICEID
+	*/
 }
+
+//http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
+
+unsigned short pciCheckVendor(unsigned short bus, unsigned short slot)
+ {
+    unsigned short vendor,device;
+    unsigned short pciInfo;
+    /* try and read the first configuration register. Since there are no */
+    /* vendors that == 0xFFFF, it must be a non-existent device. */
+    
+    if ((vendor = pciConfigReadWord(bus,slot,0,0)) != 0xFFFF) {
+       	  device = pciConfigReadWord(bus,slot,0,2);
+       		printPci(vendor,device);
+       	
+       
+    }
+    
+    	/*pciInfo = pciConfigReadWord(bus,slot,0,0);
+    	printf("INFO: %d\n",pciInfo);
+    	vendor = pciInfo & 0x0000FFFF;
+	device = pciInfo & 0xFFFF0000;
+	device = device >> 16;
+	printPci(vendor,device);*/
+    
+    
+    
+    
+    return (vendor);
+ }
+ 
+void listPci(void) {
+     unsigned char bus;
+     unsigned char device;
+ 
+     for(bus = 0; bus < 10; bus++) { //256
+         for(device = 0; device < 10; device++) { //32
+             pciCheckVendor(bus, device);
+         }
+     }
+}
+ 
+ 
+ 
+ //http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
 
 
 void printPci(int vendor, int device){
@@ -196,6 +258,7 @@ kmain()
 
 }
 
+/*
 typedef struct _PCI_VENTABLE
 {
 	unsigned short	VenId ;
@@ -9147,5 +9210,5 @@ PCI_DEVTABLE	PciDevTable [] =
 
 
 
-
+*/
 

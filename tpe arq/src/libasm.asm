@@ -134,26 +134,25 @@ _keyboardHandler:			; Handler de INT 9 ( Keyboard )
 
 _readPci:
 
-	pop	ax			; Levanto parametro i
+	push    ebp             ; Creo stack
+        mov     ebp, esp
+        
+        mov     eax, [ebp+8]    ; Tomo primer parametro
+        	
+	;ESCRIBO EL BUS
 	
-	push	ebp
-	mov	ebp,esp
+	mov	dx,0CF8h
 	
-	out	20h,ax
-	in	ax,20h
+	out	dx,eax
 	
-	;AX tiene la posicion del PCI
+	; LEO EL BUS
 	
-	mov	dx,ax
-	mov	al,0h
+	mov	dx,0CFCh
 	
-	out	dx,al
 	in	eax,dx
 	
-	;EAX tiene VendorID+DeviceID 
-		
-	mov esp,ebp
-	pop ebp
+	 mov esp,ebp
+	 pop ebp
 
 	ret
 
