@@ -130,19 +130,16 @@ unsigned short pciConfigReadWord (unsigned short bus, unsigned short slot,
 	int vendorId,deviceId;
 	/* create configuration address as per Figure 1 */
     	address = (unsigned long)((lbus << 16) | (lslot << 11) |
-            		(lfunc << 8) | (offset & 0xfc) | ((UINT32)0x80000000));
+            		(lfunc << 8) |(offset & 0xfc) | ((UINT32)0x80000000));
  
 	/* write out the address */
 	/* read in the data */
 	/* (offset & 2) * 8) = 0 will choose the fisrt word of the 32 bits register */
-	tmp = (unsigned short)(((_readPci (address)) >> ((offset & 2) * 8)) & 0xffff);
+	tmp = (int)(((_readPci (address)) >> ((offset & 2) * 8)) & 0xffff);
 	
 	return (tmp);
 	
-	/*pciInfo = _readPci(address);
-	printf("PCIInfo: %d \n",pciInfo);
-	//OBTENGO VENDORID Y DEVICEID
-	*/
+	
 }
 
 //http://wiki.osdev.org/PCI#Recursive_Scan_With_Bus_Configuration
